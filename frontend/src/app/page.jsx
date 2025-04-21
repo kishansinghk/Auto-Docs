@@ -15,7 +15,7 @@ const Home = () => {
               <ul className="flex space-x-8">
                 <li>
                   <a href="#features" className="hover:text-blue-200 transition">
-                    Featuresbdkjhskjhsshkjhs
+                    Features
                   </a>
                 </li>
                 <li>
