@@ -1,4 +1,6 @@
+'use client';
 import React from 'react';
+import Link from 'next/link';
 
 export default function AutoDocsPreview() {
   return (
@@ -6,22 +8,22 @@ export default function AutoDocsPreview() {
       {/* Header/Navigation */}
       <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white fixed w-full z-50 shadow-md">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center">
+          <Link href="/" className="flex items-center">
             <i className="text-3xl mr-2">📄</i>
             <span className="text-2xl font-bold">AutoDocs</span>
-          </div>
+          </Link>
           <nav className="hidden md:block">
             <ul className="flex space-x-8">
               <li><a href="#features" className="hover:text-blue-200 transition">Features</a></li>
               <li><a href="#how-it-works" className="hover:text-blue-200 transition">How It Works</a></li>
               <li><a href="#benefits" className="hover:text-blue-200 transition">Benefits</a></li>
-              <li><a href="#contact" className="hover:text-blue-200 transition">Contact</a></li>
+              <li><Link href="/contact-us" className="hover:text-blue-200 transition">Contact</Link></li>
               <li><a href="#aboutus" className="hover:text-blue-200 transition">About Us</a></li>
             </ul>
           </nav>
           <div className="flex space-x-4">
-            <a href="#" className="px-4 py-2 text-purple-700 bg-white rounded-md font-medium hover:bg-gray-100 transition">Login</a>
-            <a href="#" className="px-4 py-2 bg-slate-800 rounded-md font-medium hover:bg-gray-800 transition">Sign Up</a>
+            <Link href="/login" className="px-4 py-2 text-purple-700 bg-white rounded-md font-medium hover:bg-gray-100 transition">Login</Link>
+            <Link href="/signup" className="px-4 py-2 bg-slate-800 rounded-md font-medium hover:bg-gray-800 transition">Sign Up</Link>
           </div>
         </div>
       </header>
@@ -34,8 +36,8 @@ export default function AutoDocsPreview() {
             Automatically create, structure, and maintain well-organized documentation for your software projects. Save time and improve consistency with AI assistance.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-            <a href="#" className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-semibold hover:opacity-90 transition shadow-lg">Get Started</a>
-            <a href="#" className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-md font-semibold hover:bg-purple-50 transition">Watch Demo</a>
+            <Link href="/signup" className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-semibold hover:opacity-90 transition shadow-lg">Get Started</Link>
+            <Link href="/demo" className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-md font-semibold hover:bg-purple-50 transition">Watch Demo</Link>
           </div>
           <div className="mx-auto mt-16 rounded-lg shadow-xl border border-gray-200 bg-white p-4 max-w-4xl">
             <img src="/api/placeholder/800/400" alt="AutoDocs Platform Preview" className="w-full rounded" />
@@ -243,8 +245,8 @@ export default function AutoDocsPreview() {
             Join thousands of developers and teams who are saving time and improving documentation quality with AutoDocs.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#" className="px-8 py-3 bg-white text-purple-600 rounded-md font-semibold hover:bg-gray-100 transition shadow-lg">Start Free Trial</a>
-            <a href="#" className="px-8 py-3 border-2 border-white text-white rounded-md font-semibold hover:bg-indigo-700 transition">Schedule Demo</a>
+            <Link href="/signup" className="px-8 py-3 bg-white text-purple-600 rounded-md font-semibold hover:bg-gray-100 transition shadow-lg">Start Free Trial</Link>
+            <Link href="/contact-us" className="px-8 py-3 border-2 border-white text-white rounded-md font-semibold hover:bg-indigo-700 transition">Schedule Demo</Link>
           </div>
         </div>
       </section>
@@ -274,11 +276,11 @@ export default function AutoDocsPreview() {
             <div>
               <h3 className="text-lg font-semibold mb-4 text-blue-400">Quick Links</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-blue-400 transition">Home</a></li>
+                <li><Link href="/" className="text-gray-400 hover:text-blue-400 transition">Home</Link></li>
                 <li><a href="#features" className="text-gray-400 hover:text-blue-400 transition">Features</a></li>
                 <li><a href="#how-it-works" className="text-gray-400 hover:text-blue-400 transition">How It Works</a></li>
                 <li><a href="#benefits" className="text-gray-400 hover:text-blue-400 transition">Benefits</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-blue-400 transition">Pricing</a></li>
+                <li><Link href="/pricing" className="text-gray-400 hover:text-blue-400 transition">Pricing</Link></li>
               </ul>
             </div>
 
