@@ -6,7 +6,27 @@ export default function AutoDocsPreview() {
   return (
     <div className="bg-slate-50 font-sans">
       {/* Header/Navigation */}
-      
+      <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white fixed w-full z-50 shadow-md">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+          <Link href="/" className="flex items-center">
+            <i className="text-3xl mr-2">📄</i>
+            <span className="text-2xl font-bold">AutoDocs</span>
+          </Link>
+          <nav className="hidden md:block">
+            <ul className="flex space-x-8">
+              <li><a href="#features" className="hover:text-blue-200 transition">Features</a></li>
+              <li><a href="#how-it-works" className="hover:text-blue-200 transition">How It Works</a></li>
+              <li><a href="#benefits" className="hover:text-blue-200 transition">Benefits</a></li>
+              <li><Link href="/contact-us" className="hover:text-blue-200 transition">Contact</Link></li>
+              <li><a href="#aboutus" className="hover:text-blue-200 transition">About Us</a></li>
+            </ul>
+          </nav>
+          <div className="flex space-x-4">
+            <Link href="/login" className="px-4 py-2 text-purple-700 bg-white rounded-md font-medium hover:bg-gray-100 transition">Login</Link>
+            <Link href="/signup" className="px-4 py-2 bg-slate-800 rounded-md font-medium hover:bg-gray-800 transition">Sign Up</Link>
+          </div>
+        </div>
+      </header>
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -16,11 +36,11 @@ export default function AutoDocsPreview() {
             Automatically create, structure, and maintain well-organized documentation for your software projects. Save time and improve consistency with AI assistance.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-            <Link href="/signup" className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-semibold hover:opacity-90 transition transform hover:-translate-y-2 shadow-lg">Get Started</Link>
+            <Link href="/signup" className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-semibold hover:opacity-90 transition shadow-lg">Get Started</Link>
             <Link href="/demo" className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-md font-semibold hover:bg-purple-50 transition">Watch Demo</Link>
           </div>
           <div className="mx-auto mt-16 rounded-lg shadow-xl border border-gray-200 bg-white p-4 max-w-4xl">
-            <img src="https://cdn.prod.website-files.com/62fcfcf2e1a4c21ed18b80e6/66aaa3e3ead42bbebe16eda3_cc1f58f7-282f-4746-a9d6-f631c87b8c6a.png" alt="AutoDocs Platform Preview" className="w-full rounded" />
+            <img src="/api/placeholder/800/400" alt="AutoDocs Platform Preview" className="w-full rounded" />
           </div>
         </div>
       </section>
@@ -37,7 +57,7 @@ export default function AutoDocsPreview() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition border border-gray-100">
               <div className="text-blue-600 text-4xl mb-4">
                 🤖
               </div>
@@ -48,8 +68,7 @@ export default function AutoDocsPreview() {
             </div>
 
             {/* Feature 2 */}
-            <div className= "bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
-                    <div class="text-ai-blue text-4xl mb-4"></div>
+            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition border border-gray-100">
               <div className="text-blue-600 text-4xl mb-4">
                 💻
               </div>
@@ -60,7 +79,7 @@ export default function AutoDocsPreview() {
             </div>
 
             {/* Feature 3 */}
-            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition border border-gray-100">
               <div className="text-blue-600 text-4xl mb-4">
                 📤
               </div>
@@ -71,7 +90,7 @@ export default function AutoDocsPreview() {
             </div>
 
             {/* Feature 4 */}
-            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition border border-gray-100">
               <div className="text-blue-600 text-4xl mb-4">
                 🕒
               </div>
@@ -82,7 +101,7 @@ export default function AutoDocsPreview() {
             </div>
 
             {/* Feature 5 */}
-            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition border border-gray-100">
               <div className="text-blue-600 text-4xl mb-4">
                 👥
               </div>
@@ -93,7 +112,7 @@ export default function AutoDocsPreview() {
             </div>
 
             {/* Feature 6 */}
-            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+            <div className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition border border-gray-100">
               <div className="text-blue-600 text-4xl mb-4">
                 🎨
               </div>
@@ -169,7 +188,7 @@ export default function AutoDocsPreview() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <img 
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnPYsn1645fCNe55DBlwpOKtd5wYsAdvG44yvRNv-SROXh-PV8ZJDzsIk0Xadzr_gqKIQ&usqp=CAU" 
+                src="/api/placeholder/600/400" 
                 alt="AutoDocs Benefits" 
                 className="rounded-lg shadow-xl"
               />
@@ -226,7 +245,7 @@ export default function AutoDocsPreview() {
             Join thousands of developers and teams who are saving time and improving documentation quality with AutoDocs.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/signup" className="px-8 py-3 bg-white text-purple-600 rounded-md font-semibold hover:bg-gray-100 transition transform hover:-translate-y-2 shadow-lg">Start Free Trial</Link>
+            <Link href="/signup" className="px-8 py-3 bg-white text-purple-600 rounded-md font-semibold hover:bg-gray-100 transition shadow-lg">Start Free Trial</Link>
             <Link href="/contact-us" className="px-8 py-3 border-2 border-white text-white rounded-md font-semibold hover:bg-indigo-700 transition">Schedule Demo</Link>
           </div>
         </div>

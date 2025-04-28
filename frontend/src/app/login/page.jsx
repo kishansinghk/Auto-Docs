@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import React from 'react'
-import toast from 'react-hot-toast';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import * as Yup from 'yup';
 
 const loginSchema = Yup.object().shape({
@@ -12,7 +13,6 @@ const loginSchema = Yup.object().shape({
 });
 
 const Login = () => {
-
   const router = useRouter();
 
   const loginForm = useFormik({

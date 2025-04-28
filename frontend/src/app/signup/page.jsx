@@ -3,8 +3,9 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import React from 'react'
 import * as Yup from 'yup';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
 
 const signupSchema = Yup.object().shape({
     fullname: Yup.string().min(2, 'Too Short..!').max(50, 'Too Long!').required('Required'),
@@ -128,6 +129,7 @@ const Signup = () => {
                     </a>
                 </p>
             </div>
+            <ToastContainer />
         </div>
     )
 }
