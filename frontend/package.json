@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "formik": "^2.4.6",
-    "next": "15.3.0",
+    "fortawesome": "^0.0.1-security",
+    "next": "^15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "yup": "^1.6.1"
