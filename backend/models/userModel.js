@@ -5,10 +5,12 @@ const userSchema = new Schema({
     email: {type:String, required:true,unique:true},
     password:{type:String,required:true},
     city:{type:String, default: 'No city'},
-    createdAt:{type:Date,default:Date.now},
+    createdAt:{type:Date,default:Date.now},                                                                         
+
 });
 
 
 
 
 module.exports = model('users',userSchema);
+
