@@ -12,11 +12,11 @@ const Navbar = () => {
           </Link>
           <nav className="hidden md:block">
             <ul className="flex space-x-8">
-              <li><a href="#features" className="hover:text-blue-200 transition">Features</a></li>
-              <li><a href="#how-it-works" className="hover:text-blue-200 transition">How It Works</a></li>
-              <li><a href="#benefits" className="hover:text-blue-200 transition">Benefits</a></li>
+              <li><Link href="/tools" className="hover:text-blue-200 transition">Tools</Link></li>
+              {/* <li><Link href="#how-it-works" className="hover:text-blue-200 transition">How It Works</Link></li> */}
+              {/* <li><Link href="#benefits" className="hover:text-blue-200 transition">Benefits</Link></li> */}
               <li><Link href="/contact-us" className="hover:text-blue-200 transition">Contact</Link></li>
-              <li><a href="/about-us" className="hover:text-blue-200 transition">About Us</a></li>
+              <li><Link href="/about-us" className="hover:text-blue-200 transition">About Us</Link></li>
             </ul>
           </nav>
           <div className="flex space-x-4">
