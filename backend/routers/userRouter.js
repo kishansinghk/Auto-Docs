@@ -23,18 +23,13 @@ router.post('/add', (req, res) => {
 
 
 
-router.post('/', (req, res) => {
-    const { name, email, message } = req.body;
-  
-    // You can add validation and save this data to DB here
-    if (!name || !email || !message) {
-      return res.status(400).json({ error: 'All fields are required.' });
-    }
-  
-    // For now, let's just return the received feedback
-    res.status(200).json({
-      message: 'Feedback received successfully!',
-      data: { name, email, message },
+router.get('/getall', (req, res) => {
+    Model.find()
+    .then((result) => {
+        res.status(200).json(result);
+    }).catch((err) => {
+        console.log(err);
+        res.status(500).json({message: 'Internal server error'});
     });
   });
 
