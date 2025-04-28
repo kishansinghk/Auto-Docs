@@ -1,7 +1,11 @@
 'use client';
+import axios from 'axios';
 import { useFormik } from 'formik';
 import React from 'react'
 import * as Yup from 'yup';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 const signupSchema = Yup.object().shape({
     fullname: Yup.string().min(2, 'Too Short..!').max(50, 'Too Long!').required('Required'),
@@ -11,6 +15,7 @@ const signupSchema = Yup.object().shape({
 });
 
 const Signup = () => {
+    const router = useRouter();
 
     const signupForm = useFormik({
         initialValues: {
@@ -20,8 +25,16 @@ const Signup = () => {
             confirmPassword: ''
         },
         onSubmit: (values, { resetForm }) => {
-            console.log(values);
-
+            axios.post('http://localhost:5000/user/add',values)
+            .then((result) => {
+                console.log(result.data);
+                toast.success('User Created Successfully !!')
+                resetForm();   
+                router.push('/login');
+            }).catch((err) => {
+                console.log(err);
+                toast.error('Something went wrong !!')
+            });
         },
         validationSchema: signupSchema
     })
@@ -116,7 +129,7 @@ const Signup = () => {
                     </a>
                 </p>
             </div>
-
+            <ToastContainer />
         </div>
     )
 }

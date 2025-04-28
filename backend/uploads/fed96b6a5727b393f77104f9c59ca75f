@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoDocs - AI-Powered Documentation Generator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ai-blue': '#2563eb',
+                        'ai-indigo': '#4f46e5',
+                        'ai-purple': '#7e22ce',
+                        'ai-dark': '#1e293b',
+                        'doc-light': '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-doc-light font-sans">
+    <!-- Header/Navigation -->
+    <header class="bg-gradient-to-r from-ai-blue to-ai-purple text-white fixed w-full z-50 shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-file-code text-3xl mr-2"></i>
+                <span class="text-2xl font-bold">AutoDocs</span>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-8">
+                    <li><a href="#features" class="hover:text-blue-200 transition">Features</a></li>
+                    <li><a href="#how-it-works" class="hover:text-blue-200 transition">How It Works</a></li>
+                    <li><a href="#benefits" class="hover:text-blue-200 transition">Benefits</a></li>
+                    <li><a href="#contact" class="hover:text-blue-200 transition">Contact</a></li>
+                    <li> <a href="#aboutus" class="hover:text-blue-200 transition">About Us</a></li>
+                </ul>
+            </nav>
+            <div class="flex space-x-4">
+                <a href="loginpage.html" class="px-4 py-2 text-ai-purple bg-white rounded-md font-medium hover:bg-gray-100 transition">Login</a>
+                <a href="signuppage.html" class="px-4 py-2 bg-ai-dark rounded-md font-medium hover:bg-gray-800 transition">Sign Up</a>
+            </div>
+            <button class="md:hidden text-white">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+        <div class="container mx-auto px-4 text-center">
+            <div class="absolute inset-0 bg-cover bg-center opacity-5" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMzMjJlMzgiIGZpbGwtb3BhY2l0eT0iMC40Ij48cGF0aCBkPSJNMzYgMzRoLTJ2LTRoMnY0em0wLTZoLTJ2LTRoMnY0em0wLTZoLTJ2LTRoMnY0em0wLTZoLTJ2LTRoMnY0em0wLTZoLTJWNGgydjR6Ii8+PC9nPjwvZz48L3N2Zz4=')"></div>
+            <h1 class="text-4xl md:text-5xl font-bold text-ai-dark mb-6">AI-Powered Documentation Generator</h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                Automatically create, structure, and maintain well-organized documentation for your software projects. Save time and improve consistency with AI assistance.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+                <a href="#" class="px-8 py-3 bg-gradient-to-r from-ai-blue to-ai-purple text-white rounded-md font-semibold hover:opacity-90 transition transform hover:-translate-y-1 shadow-lg">Get Started</a>
+                <a href="#" class="px-8 py-3 border-2 border-ai-purple text-ai-purple rounded-md font-semibold hover:bg-purple-50 transition">Watch Demo</a>
+            </div>
+            <img src="https://cdn.prod.website-files.com/62fcfcf2e1a4c21ed18b80e6/66aaa3e3ead42bbebe16eda3_cc1f58f7-282f-4746-a9d6-f631c87b8c6a.png" alt="AutoDocs Platform Preview" class="max-w-4xl mx-auto mt-16 rounded-lg shadow-xl border border-gray-200"/>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-ai-blue to-ai-purple">Powerful Features</h2>
+                <p class="text-xl text-gray-600 mt-4 max-w-3xl mx-auto">
+                    AutoDocs combines AI technology with modern web development to streamline your documentation process.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+                    <div class="text-ai-blue text-4xl mb-4">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI-Powered Generation</h3>
+                    <p class="text-gray-600">
+                        Leverage artificial intelligence to automatically generate clear and concise documentation from your code comments and definitions.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+                    <div class="text-ai-blue text-4xl mb-4">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Source Code Analysis</h3>
+                    <p class="text-gray-600">
+                        Analyze code in popular programming languages like JavaScript, Python, and Java to extract relevant information.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+                    <div class="text-ai-blue text-4xl mb-4">
+                        <i class="fas fa-file-export"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Multiple Export Formats</h3>
+                    <p class="text-gray-600">
+                        Export your documentation in various formats including PDF, Markdown, and more for easy sharing.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+                    <div class="text-ai-blue text-4xl mb-4">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Version Control</h3>
+                    <p class="text-gray-600">
+                        Track changes to documentation with our History Manager module, allowing you to view and revert to previous versions.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+                    <div class="text-ai-blue text-4xl mb-4">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Team Collaboration</h3>
+                    <p class="text-gray-600">
+                        Enable role-based access and permissions for seamless collaboration among team members.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 border border-gray-100">
+                    <div class="text-ai-blue text-4xl mb-4">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Theme Customization</h3>
+                    <p class="text-gray-600">
+                        Personalize documentation styles to match your brand identity and enhance user experience.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-gradient-to-b from-blue-50 to-indigo-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-ai-blue to-ai-purple">How It Works</h2>
+                <p class="text-xl text-gray-600 mt-4 max-w-3xl mx-auto">
+                    Creating professional documentation has never been easier. AutoDocs streamlines the entire process.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-start gap-8">
+                <!-- Step 1 -->
+                <div class="flex-1 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-ai-blue to-ai-purple rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">1</div>
+                    <h3 class="text-xl font-bold mb-3">Upload Source Code</h3>
+                    <p class="text-gray-600">
+                        Upload or paste your source code through our user-friendly interface.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex-1 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-ai-blue to-ai-purple rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">2</div>
+                    <h3 class="text-xl font-bold mb-3">AI Analysis</h3>
+                    <p class="text-gray-600">
+                        Our AI analyzes your code and generates structured documentation automatically.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex-1 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-ai-blue to-ai-purple rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">3</div>
+                    <h3 class="text-xl font-bold mb-3">Edit & Customize</h3>
+                    <p class="text-gray-600">
+                        Refine the generated documentation using our live markdown editor and theme customizer.
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="flex-1 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-ai-blue to-ai-purple rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">4</div>
+                    <h3 class="text-xl font-bold mb-3">Export & Share</h3>
+                    <p class="text-gray-600">
+                        Export your documentation in various formats and share with your team or clients.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-ai-blue to-ai-purple">Why Choose AutoDocs?</h2>
+                <p class="text-xl text-gray-600 mt-4 max-w-3xl mx-auto">
+                    AutoDocs offers significant advantages over traditional documentation methods.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnPYsn1645fCNe55DBlwpOKtd5wYsAdvG44yvRNv-SROXh-PV8ZJDzsIk0Xadzr_gqKIQ&usqp=CAU" alt="AutoDocs Benefits" class="rounded-lg shadow-xl"/>
+                </div>
+                <div>
+                    <ul class="space-y-6">
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 mr-4 mt-1">
+                                <i class="fas fa-check-circle text-ai-blue text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-1">Time Efficiency</h3>
+                                <p class="text-gray-600">Reduce documentation time by up to 70% with AI-powered automation.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 mr-4 mt-1">
+                                <i class="fas fa-check-circle text-ai-blue text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-1">Consistency & Quality</h3>
+                                <p class="text-gray-600">Maintain consistent structure and formatting across all documentation.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 mr-4 mt-1">
+                                <i class="fas fa-check-circle text-ai-blue text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-1">Up-to-Date Documentation</h3>
+                                <p class="text-gray-600">Automatically detect code changes and update documentation accordingly.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0 mr-4 mt-1">
+                                <i class="fas fa-check-circle text-ai-blue text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-1">Team Productivity</h3>
+                                <p class="text-gray-600">Improve collaboration and reduce miscommunication within development teams.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-gradient-to-r from-ai-blue via-ai-indigo to-ai-purple text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Documentation Process?</h2>
+            <p class="text-xl max-w-2xl mx-auto mb-8">
+                Join thousands of developers and teams who are saving time and improving documentation quality with AutoDocs.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#" class="px-8 py-3 bg-white text-ai-purple rounded-md font-semibold hover:bg-gray-100 transition shadow-lg">Start Free Trial</a>
+                <a href="#" class="px-8 py-3 border-2 border-white text-white rounded-md font-semibold hover:bg-indigo-700 transition">Schedule Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-ai-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-file-code text-2xl mr-2 text-blue-400"></i>
+                        <span class="text-xl font-bold">AutoDocs</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Revolutionizing software documentation with AI-powered solutions.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-blue-400">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Home</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-blue-400 transition">Features</a></li>
+                        <li><a href="#how-it-works" class="text-gray-400 hover:text-blue-400 transition">How It Works</a></li>
+                        <li><a href="#benefits" class="text-gray-400 hover:text-blue-400 transition">Benefits</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-blue-400">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">API Reference</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Tutorials</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Support</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-blue-400">Contact Us</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-blue-400 mr-3 mt-1"></i>
+                            <span class="text-gray-400">support@autodocs.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone text-blue-400 mr-3 mt-1"></i>
+                            <span class="text-gray-400">+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-400 mr-3 mt-1"></i>
+                            <span class="text-gray-400">123 Documentation St, Tech City, 94123</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 mt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2025 AutoDocs. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
