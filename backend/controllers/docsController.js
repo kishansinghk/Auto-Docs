@@ -19,111 +19,197 @@ const uploadFile = async (req, res) => {
     try {
       const prompt = `Generate comprehensive technical documentation for this code:
       
-    ${fileContent}
-    
-    Please provide a detailed analysis in Markdown format with the following sections:
-    
-    ## Code Overview
-    - Detailed technical explanation of the code's purpose and functionality
-    - Architecture and design patterns used
-    - Key technical decisions and their rationale
-    - Integration points with other system components
-    - Error handling approach
-    
-    ## Technical Analysis
-    ### Code Structure
-    - Detailed breakdown of the codebase organization
-    - Module/class hierarchy and relationships
-    - Design patterns implemented
-    - Code complexity analysis
-    - Architectural considerations
-    
-    ### Implementation Details
-    For each function, class, or module:
-    - Complete signature analysis (parameters, return types, exceptions)
-    - Algorithmic complexity (Big O notation where applicable)
-    - Memory usage considerations
-    - Error handling mechanisms
-    - Asynchronous operations handling
-    - Data flow description
-    - Side effects and state mutations
-    
-    ### Dependencies
-    - Complete dependency tree
-    - Version requirements and compatibility notes
-    - Dependency injection patterns
-    - External API interactions
-    - System requirements
-    
-    ### Data Management
-    - Data structures used and rationale
-    - State management patterns
-    - Data validation and sanitization
-    - Database interactions (if any)
-    - Caching mechanisms (if implemented)
-    
-    ### Security Considerations
-    - Authentication/Authorization mechanisms
-    - Input validation and sanitization
-    - Security best practices implementation
-    - Potential security vulnerabilities to address
-    
-    ### Performance Analysis
-    - Performance optimization techniques used
-    - Resource usage patterns
-    - Bottleneck identification
-    - Caching strategies
-    - Load handling capabilities
-    
-    ### Error Handling
-    - Comprehensive error scenarios
-    - Error recovery mechanisms
-    - Logging and monitoring approach
-    - Debug capabilities
-    
-    ### Testing Considerations
-    - Unit testing approach
-    - Integration testing requirements
-    - Edge cases to test
-    - Mock requirements
-    - Test coverage recommendations
-    
-    ### API Documentation (if applicable)
-    - Complete API specifications
-    - Request/Response formats
-    - Authentication requirements
-    - Rate limiting details
-    - API versioning strategy
-    
-    ### Code Examples
-    - Implementation examples with different scenarios
-    - Integration examples
-    - Error handling examples
-    - Best practices demonstrations
-    
-    ### Maintenance and Scalability
-    - Code maintainability considerations
-    - Scalability design patterns
-    - Potential improvement areas
-    - Technical debt identification
-    - Upgrade and migration considerations
-    
-    ### Development Guidelines
-    - Coding standards adherence
-    - Documentation practices
-    - Version control practices
-    - Code review checklist
-    - Development environment setup
-    
-    Please format the documentation with:
-    - Clear hierarchical structure
-    - Code snippets where relevant
-    - Technical diagrams (using ASCII/markdown) when helpful
-    - Tables for structured data
-    - Bullet points for lists
-    - Links to related documentation
-    
-    Ensure all technical terms are accurately used and explained where necessary.`;
+${fileContent}
+
+Please provide a detailed analysis in Markdown format with the following sections:
+
+## Code Overview
+* Purpose: [bullet point description of the code's purpose]
+* Functionality: [bullet point description of how it works]
+* Architecture: [bullet points about architecture]
+* Key technical decisions:
+  * [First decision and rationale]
+  * [Second decision and rationale]
+  * [Additional points as needed]
+* Integration points with other system components:
+  * [First integration point]
+  * [Second integration point]
+  * [Additional points as needed]
+* Error handling approach:
+  * [Error handling strategy]
+  * [Implementation details]
+
+## Technical Analysis
+### Code Structure
+* Organization:
+  * [Key structure point 1]
+  * [Key structure point 2]
+* Module/class hierarchy:
+  * [First hierarchical relationship]
+  * [Second hierarchical relationship]
+* Design patterns:
+  * [First pattern]
+  * [Second pattern]
+* Code complexity assessment:
+  * [Complexity observations]
+* Architectural considerations:
+  * [First consideration]
+  * [Second consideration]
+
+### Implementation Details
+For each function, class, or module:
+* Name: [function/class/module name]
+  * Signature: [parameters, return types, exceptions]
+  * Complexity: [Big O notation where applicable]
+  * Memory usage: [observations]
+  * Error handling: [approach used]
+  * Async operations: [how they're handled]
+  * Data flow: [description]
+  * Side effects: [any state mutations]
+
+### Dependencies
+* Primary dependencies:
+  * [First dependency and version]
+  * [Second dependency and version]
+* Dependency injection patterns:
+  * [Pattern description if applicable]
+* External API interactions:
+  * [API and interaction details]
+* System requirements:
+  * [Requirement 1]
+  * [Requirement 2]
+
+### Data Management
+* Data structures:
+  * [Structure 1 and rationale]
+  * [Structure 2 and rationale]
+* State management:
+  * [Approach used]
+* Data validation:
+  * [Validation methods]
+* Database interactions:
+  * [Database details if applicable]
+* Caching mechanisms:
+  * [Caching strategy if implemented]
+
+### Security Considerations
+* Authentication/Authorization:
+  * [Mechanism details]
+* Input validation:
+  * [Approach used]
+* Security practices:
+  * [Practice 1]
+  * [Practice 2]
+* Potential vulnerabilities:
+  * [Vulnerability 1]
+  * [Vulnerability 2]
+
+### Performance Analysis
+* Optimization techniques:
+  * [Technique 1]
+  * [Technique 2]
+* Resource usage:
+  * [Resource 1 usage pattern]
+  * [Resource 2 usage pattern]
+* Bottlenecks:
+  * [Bottleneck 1]
+  * [Bottleneck 2]
+* Caching strategies:
+  * [Strategy details]
+* Load handling:
+  * [Capabilities]
+
+### Error Handling
+* Error scenarios:
+  * [Scenario 1]
+  * [Scenario 2]
+* Recovery mechanisms:
+  * [Mechanism 1]
+  * [Mechanism 2]
+* Logging approach:
+  * [Approach details]
+* Debug capabilities:
+  * [Capability details]
+
+### Testing Considerations
+* Unit testing:
+  * [Approach details]
+* Integration testing:
+  * [Requirements]
+* Edge cases:
+  * [Case 1]
+  * [Case 2]
+* Mock requirements:
+  * [Requirement 1]
+  * [Requirement 2]
+* Coverage recommendations:
+  * [Recommendation details]
+
+### API Documentation (if applicable)
+* API specifications:
+  * [Endpoint 1]
+  * [Endpoint 2]
+* Request/Response formats:
+  * [Format details]
+* Authentication:
+  * [Requirements]
+* Rate limiting:
+  * [Details]
+* Versioning strategy:
+  * [Strategy details]
+
+### Code Examples
+* Implementation:
+  * \`\`\`
+    [code example 1]
+    \`\`\`
+  * \`\`\`
+    [code example 2]
+    \`\`\`
+* Integration:
+  * \`\`\`
+    [integration example]
+    \`\`\`
+* Error handling:
+  * \`\`\`
+    [error handling example]
+    \`\`\`
+
+### Maintenance and Scalability
+* Maintainability factors:
+  * [Factor 1]
+  * [Factor 2]
+* Scalability patterns:
+  * [Pattern 1]
+  * [Pattern 2]
+* Improvement areas:
+  * [Area 1]
+  * [Area 2]
+* Technical debt:
+  * [Debt item 1]
+  * [Debt item 2]
+* Upgrade considerations:
+  * [Consideration 1]
+  * [Consideration 2]
+
+### Development Guidelines
+* Coding standards:
+  * [Standard 1]
+  * [Standard 2]
+* Documentation practices:
+  * [Practice 1]
+  * [Practice 2]
+* Version control:
+  * [Practice 1]
+  * [Practice 2]
+* Code review checklist:
+  * [Item 1]
+  * [Item 2]
+* Development environment:
+  * [Setup detail 1]
+  * [Setup detail 2]
+
+      Please ensure all technical terms are accurately used and explained where necessary. Use clear bullet points throughout for better readability, and include code snippets, ASCII/markdown diagrams, tables, and links where relevant.`;
 
       // Continue with sending the prompt to API...
 

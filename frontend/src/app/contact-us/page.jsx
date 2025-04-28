@@ -35,12 +35,12 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 pt-24">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Contact Us</h1>
-          <p className="mt-4 text-lg text-gray-600">
+        <div className="text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8 rounded-lg">
+          <h1 className="text-3xl font-bold sm:text-4xl">Contact Us</h1>
+          <p className="mt-4 text-lg">
             Have questions about Autodocs? We're here to help.
           </p>
         </div>

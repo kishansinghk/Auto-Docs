@@ -89,8 +89,8 @@ export default function Home() {
         // Regular markdown processing
         let processedLine = line
           .replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold text-indigo-700 mt-6 mb-3">$1</h1>')
-          .replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold text-indigo-600 mt-5 mb-2">$1</h2>')
-          .replace(/^### (.*$)/gm, '<h3 class="text-lg font-bold text-indigo-500 mt-4 mb-2">$1</h3>')
+          .replace(/^## (.*$)/gm, '<h2 className="text-xl font-bold text-indigo-600 mt-5 mb-2">$1</h2>')
+          .replace(/^### (.*$)/gm, '<h3 className="text-lg font-bold text-indigo-500 mt-4 mb-2">$1</h3>')
           .replace(/\*\*(.*?)\*\*/g, '<span class="font-bold">$1</span>')
           .replace(/\*(.*?)\*/g, '<span class="italic">$1</span>');
         
@@ -177,7 +177,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 py-6 shadow-lg">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-6 shadow-lg pt-20">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold text-white">AI-Generated Documentation</h1>
           <p className="text-indigo-100 mt-2">Upload your code files to generate comprehensive documentation</p>

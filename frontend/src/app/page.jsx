@@ -29,10 +29,10 @@ export default function AutoDocsPreview() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-6">AI-Powered Documentation Generator</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+      <section className="pt-32 pb-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="container mx-auto px-4 text-center text-white">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">AI-Powered Documentation Generator</h1>
+          <p className="text-xl max-w-3xl mx-auto mb-8">
             Automatically create, structure, and maintain well-organized documentation for your software projects. Save time and improve consistency with AI assistance.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
@@ -40,7 +40,7 @@ export default function AutoDocsPreview() {
             <Link href="/demo" className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-md font-semibold hover:bg-purple-50 transition">Watch Demo</Link>
           </div>
           <div className="mx-auto mt-16 rounded-lg shadow-xl border border-gray-200 bg-white p-4 max-w-4xl">
-            <img src="/api/placeholder/800/400" alt="AutoDocs Platform Preview" className="w-full rounded" />
+            <img src="/TaskAutomation.png" alt="AutoDocs Platform Preview" className="w-full rounded" />
           </div>
         </div>
       </section>
@@ -238,7 +238,7 @@ export default function AutoDocsPreview() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Ready to Transform Your Documentation Process?</h2>
           <p className="text-xl max-w-2xl mx-auto mb-8">
