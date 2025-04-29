@@ -18,7 +18,7 @@ export default function AutoDocsPreview() {
               <li><a href="#how-it-works" className="hover:text-blue-200 transition">How It Works</a></li>
               <li><a href="#benefits" className="hover:text-blue-200 transition">Benefits</a></li>
               <li><Link href="/contact-us" className="hover:text-blue-200 transition">Contact</Link></li>
-              <li><a href="#aboutus" className="hover:text-blue-200 transition">About Us</a></li>
+              <li><a href="/about-us" className="hover:text-blue-200 transition">About Us</a></li>
             </ul>
           </nav>
           <div className="flex space-x-4">
