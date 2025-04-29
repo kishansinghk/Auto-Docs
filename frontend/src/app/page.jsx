@@ -37,7 +37,7 @@ export default function AutoDocsPreview() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
             <Link href="/signup" className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-semibold hover:opacity-90 transition shadow-lg">Get Started</Link>
-            <Link href="/demo" className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-md font-semibold hover:bg-purple-50 transition">Watch Demo</Link>
+            <Link href="/demo" className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-semibold hover:opacity-90 transition shadow-lg">Watch Demo</Link>
           </div>
           <div className="mx-auto mt-16 rounded-lg shadow-xl border border-gray-200 bg-white p-4 max-w-4xl">
             <img src="/TaskAutomation.png" alt="AutoDocs Platform Preview" className="w-full rounded" />

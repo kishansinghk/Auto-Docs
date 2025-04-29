@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  </head>
+  <body>
+    <header>
+
+        <nav></nav>
+
+    </header>
+
+    <main class="min-h-screen">
+        <article>
+            <section class=" border-red-500">
+              <div class=" border-blue-500 w-[80%] mx-auto grid grid-cols-2">
+
+                <div class=" flex flex-col justify-center border-green-500 space-y-4 gap-3 p-5">
+                    <h1 class="text-5xl font-bold">The Meat Lovers' Haven</h1>
+                    <p class="font-lg">A paradise for meat lovers, where every bite tells a story of rich flavors, smoky grills, and the finest cuts of meat. At The Meat Lovers' Haven, we bring together a variety of succulent dishes, from perfectly marinated kebabs and juicy tandoori meats to sizzling steaks and slow-cooked curries. Whether you crave the bold spices of India or the charred perfection of a grill, each dish is crafted to satisfy your deepest carnivorous cravings. Come, indulge in an unforgettable feast that will leave your taste buds dancing and your hunger fully satisfied.</p>
+                    <button class="bg-violet-500 text-white py-2 px-4 rounded w-[30%]">Order Now</button>
+                </div>
+
+                <div class=" p-5 px-4">
+
+                  <img src="https://img.restaurantguru.com/r171-The-Hungry-Hut-Non-Veg-and-Veg-Restaurant-in-Behror-chicken-curry.jpg" alt="">
+                </div>
+              </div>
+
+              
+            </section>
+        </article>
+
+        <article>
+          <section class="w-[80%] mx-auto">
+            <div>
+              <h1 class="text-5xl font-bold text-center py-10">Our Menu</h1>
+            </div>
+
+            <div class="grid grid-cols-4 gap-3 py-10">
+
+              <div class=" border-2 border-black-500">
+                <img src="https://hips.hearstapps.com/hmg-prod/images/roast-chicken-recipe-2-66b231ac9a8fb.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*" alt="">
+                <h3 class="font-bold text-center">Chiken</h3>
+                <p class="p-5">Our Grilled Herb Chicken is the perfect balance of tender, juicy meat and aromatic, fresh herbs. Marinated in a blend of rosemary, thyme, garlic, and olive oil, the chicken is grilled to perfection, creating a deliciously crispy exterior while keeping the inside incredibly moist. Served with a side of roasted seasonal vegetables and a light drizzle of zesty lemon butter sauce, it’s a dish that satisfies both the senses and the soul.</p>
+                
+              </div>
+              <div class="border-2 border-black-500">
+                <img src="https://c.ndtvimg.com/2023-01/oqp7e4cg_mutton-curry_625x300_21_January_23.jpg" alt="">
+                <h3 class="font-bold text-center">Mutton</h3>
+                <p class="p-5">Our Slow-Cooked Mutton Curry is a rich, aromatic dish that brings together tender cuts of mutton and a perfectly balanced blend of spices. The mutton is slowly simmered in a mix of cumin, coriander, garam masala, and a touch of chili, allowing the flavors to fully infuse the meat. The result is a melt-in-your-mouth texture, with each bite offering a bold and savory experience. Served with fluffy basmati rice or freshly baked naan, this hearty dish is the epitome of comfort and indulgence.</p>
+              </div>
+              <div class="border-2 border-black-500">
+                <img src="https://www.freshtohome.com/blog/wp-content/uploads/2024/07/Screenshot-2024-07-03-113244.png" alt="kkk">
+                <h3 class="font-bold text-center">Fish Fry</h3>
+                <p class="p-5">Our Pan-Seared Lemon Garlic Fish is a flavorful seafood delight that brings the fresh taste of the ocean to your plate. The fish is lightly seasoned with a zesty lemon and garlic marinade, then pan-seared to a golden brown, ensuring a crispy exterior while keeping the fish tender and flaky inside. Topped with a vibrant parsley-caper sauce and served with a side of buttery mashed potatoes and seasonal vegetables, this dish is a perfect harmony of flavors.
+
+                </p>
+              </div>
+              <div class="border-2 border-black-500">
+                <img src="https://curlytales.com/wp-content/uploads/2022/07/Untitled-design-2022-07-05T194238.245.jpg" alt="">
+                <h3 class="font-bold text-center">Handi Chiken Biryani</h3>
+                <p class="p-5">Indulge in the royal flavors of our Handi Chicken Biryani, a traditional favorite that combines fragrant basmati rice, succulent marinated chicken, and aromatic spices. Slowly cooked in a sealed "handi" (clay pot), the chicken absorbs all the rich flavors of cinnamon, cardamom, saffron, and a hint of cumin, creating a dish that is bursting with taste. Each grain of rice is perfectly separated, infused with a beautiful blend of herbs and spices, and the chicken is tender and juicy. </p>
+               
+              
+            </div>
+
+          </section>
+        </article>
+    </main>
+
+    <footer>
+
+    </footer>
+
+  </body>
+
+</html>
