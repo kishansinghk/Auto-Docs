@@ -22,27 +22,15 @@ export default function AboutUs() {
   const teamMembers = [
     {
       id: 1,
-      name: "Dr. Maya Johnson",
+      name: "Kishan Singh",
       role: "Founder & CEO",
-      bio: "Former software engineer with a PhD in Computer Science. Maya founded AutoDocs after experiencing firsthand the frustrations of documentation management in tech companies."
+      bio: "Former software engineer with extensive experience in software development. Kishan founded AutoDocs after experiencing firsthand the frustrations of documentation management in tech companies."
     },
     {
       id: 2,
-      name: "Alex Rivera",
-      role: "CTO",
-      bio: "AI specialist with 15 years of experience at leading tech firms. Alex leads our technical innovation and AI development efforts."
-    },
-    {
-      id: 3,
-      name: "Sarah Chen",
-      role: "Head of Product",
-      bio: "Product management expert who previously led teams at major SaaS companies. Sarah ensures AutoDocs meets real user needs."
-    },
-    {
-      id: 4,
-      name: "Jamal Brooks",
-      role: "Customer Success Lead",
-      bio: "With a background in technical documentation and customer support, Jamal leads our efforts to ensure clients maximize value from AutoDocs."
+      name: "Adarsh Singh",
+      role: "Employee",
+      bio: "Experienced software developer specializing in building robust and scalable applications."
     }
   ];
 
