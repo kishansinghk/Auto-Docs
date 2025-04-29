@@ -29,7 +29,7 @@ const Login = () => {
           toast.success('Login Successful');
           localStorage.setItem('user', response.data.token);
           resetForm();
-          router.push('/');
+          router.push('/uploadCode');
         }).catch((err) => {
           console.log(err);
           toast.error('Login Failed');
