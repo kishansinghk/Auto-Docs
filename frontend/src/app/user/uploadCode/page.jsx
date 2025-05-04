@@ -3,8 +3,23 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import FileUpload from "@/components/fileUpload";
 import CodeBlock from "@/components/syntaxHilighter";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+
+  const token = localStorage.getItem('user');
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!token) {
+      router.push('/login');
+    }
+  })
+
+
+
+
   const [docs, setDocs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeDoc, setActiveDoc] = useState(null);
