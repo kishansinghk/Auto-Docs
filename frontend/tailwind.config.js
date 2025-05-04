@@ -1,18 +1,18 @@
 const colors = require('tailwindcss/colors');
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./public/**/*.html",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       colors: {
-        'ai-blue': '#2563eb',
-        'ai-indigo': '#4f46e5',
-        'ai-purple': '#7e22ce',
-        'ai-dark': '#1e293b',
-        'doc-light': '#f8fafc',
+        primary: '#3b82f6',
+        secondary: '#6b21a8',
+        muted: '#9ca3af',
       },
     },
   },
