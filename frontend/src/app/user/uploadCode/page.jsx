@@ -4,6 +4,7 @@ import axios from "axios";
 import FileUpload from "@/components/fileUpload";
 import CodeBlock from "@/components/syntaxHilighter";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
 
