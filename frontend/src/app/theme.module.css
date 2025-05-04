@@ -1,0 +1,15 @@
+.light {
+  --background-color: #ffffff;
+  --text-color: #1f2937;
+}
+
+.dark {
+  --background-color: #1f2937;
+  --text-color: #ffffff;
+}
+
+.theme {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
