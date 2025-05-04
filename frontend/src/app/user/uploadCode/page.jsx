@@ -6,6 +6,20 @@ import CodeBlock from "@/components/syntaxHilighter";
 import toast from "react-hot-toast";
 
 export default function Home() {
+
+  const token = localStorage.getItem('user');
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!token) {
+      router.push('/login');
+    }
+  })
+
+
+
+
   const [docs, setDocs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeDoc, setActiveDoc] = useState(null);

@@ -1,9 +1,9 @@
 'use client'
 import Link from 'next/link'
 
-const Navbar = () => {
+const  Navbar = () => {
   return (
-    <nav className="fixed w-full z-50 bg-gradient-to-r from-blue-600 to-purple-600">
+    <nav className="fixed w-full shadow-2xl z-50 bg-gradient-to-r from-blue-600 to-purple-600">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center">
           <i className="text-3xl mr-2">📄</i>

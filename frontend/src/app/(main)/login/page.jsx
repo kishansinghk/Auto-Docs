@@ -21,7 +21,7 @@ const Login = () => {
       password: '',
     },
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
+      // console.log(values);
 
       axios.post('http://localhost:5000/user/authenticate', values)
         .then((response) => {
@@ -29,7 +29,7 @@ const Login = () => {
           toast.success('Login Successful');
           localStorage.setItem('user', response.data.token);
           resetForm();
-          router.push('/uploadCode');
+          router.push('/');
         }).catch((err) => {
           console.log(err);
           toast.error('Login Failed');
