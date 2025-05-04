@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import FileUpload from "@/components/fileUpload";
 import CodeBlock from "@/components/syntaxHilighter";
+import toast from "react-hot-toast";
 
 export default function Home() {
   const [docs, setDocs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeDoc, setActiveDoc] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode
+  const [editedContent, setEditedContent] = useState(""); // State to hold edited content
 
   const fetchDocs = async () => {
     setLoading(true);
@@ -28,28 +31,68 @@ export default function Home() {
     fetchDocs();
   }, []);
 
-  // Function to extract and format key points from documentation
-  // const extractKeyPoints = (content) => {
-  //   const lines = content.split('\n');
-  //   const keyPoints = [];
-    
-  //   // Look for headings, function names, important sections
-  //   lines.forEach(line => {
-  //     if (line.match(/^#{1,3}\s.*/) || // Markdown headings
-  //         line.match(/^(function|const|class|interface)\s+\w+/) || // Function/class declarations
-  //         line.match(/^(\*\s|\-\s|[0-9]+\.\s).*/) || // List items
-  //         line.includes('Parameters:') ||
-  //         line.includes('Returns:') ||
-  //         line.includes('Example:') ||
-  //         line.includes('Usage:')) {
-  //       keyPoints.push(line.trim());
-  //     }
-  //   });
-    
-  //   return keyPoints.slice(0, 6); // Limit to first 6 key points
-  // };
+  const deleteDocument = async (docId) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/delete/${docId}`);
+      if (response.status === 200) {
+        toast.success("Document deleted successfully", {
+          duration: 4000,
+          position: "top-right",
+          style: {
+            background: "#063970",
+            color: "#fff",
+          },
+        });
+        fetchDocs(); // Refresh the document list
+      }
+    } catch (error) {
+      console.error("Error deleting document", error);
+      toast.error("Failed to delete document", {
+        duration: 4000,
+        position: "top-right",
+        style: {
+          background: "#f87171",
+          color: "#fff",
+        },
+      });
+    }
+  };
 
-  // Function to format documentation content with syntax highlighting
+  const handleEdit = (doc) => {
+    setIsEditing(true);
+    setEditedContent(doc.content);
+  };
+
+  const saveEditedDocument = async (docId) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/update/${docId}`, {
+        content: editedContent,
+      });
+      if (response.status === 200) {
+        toast.success("Document updated successfully", {
+          duration: 4000,
+          position: "top-right",
+          style: {
+            background: "#063970",
+            color: "#fff",
+          },
+        });
+        setIsEditing(false);
+        fetchDocs(); // Refresh the document list
+      }
+    } catch (error) {
+      console.error("Error updating document", error);
+      toast.error("Failed to update document", {
+        duration: 4000,
+        position: "top-right",
+        style: {
+          background: "#f87171",
+          color: "#fff",
+        },
+      });
+    }
+  };
+
   const formatDocContent = (content) => {
     let formattedContent = '';
     const lines = content.split('\n');
@@ -58,14 +101,11 @@ export default function Home() {
     let codeLanguage = '';
     
     lines.forEach(line => {
-      // Check for code block start/end
       if (line.startsWith('```')) {
         if (inCodeBlock) {
-          // End of code block
           formattedContent += `<div id="code-block-${Math.random().toString(36).substr(2, 9)}" class="code-block-placeholder"></div>`;
           inCodeBlock = false;
           
-          // Render the code block (will be replaced with React component)
           setTimeout(() => {
             const placeholder = document.getElementById(`code-block-${Math.random().toString(36).substr(2, 9)}`);
             if (placeholder) {
@@ -78,19 +118,16 @@ export default function Home() {
           codeContent = '';
           codeLanguage = '';
         } else {
-          // Start of code block
           inCodeBlock = true;
           codeLanguage = line.slice(3).trim() || 'plaintext';
         }
       } else if (inCodeBlock) {
-        // Inside code block, accumulate code
         codeContent += line + '\n';
       } else {
-        // Regular markdown processing
         let processedLine = line
           .replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold text-indigo-700 mt-6 mb-3">$1</h1>')
           .replace(/^## (.*$)/gm, '<h2 className="text-xl font-bold text-indigo-600 mt-5 mb-2">$1</h2>')
-          .replace(/^### (.*$)/gm, '<h3 className="text-lg font-bold text-indigo-500 mt-4 mb-2">$1</h3>')
+          .replace(/^### (.*$)/gm, '<h3 class="text-lg font-bold text-indigo-500 mt-4 mb-2">$1</h3>')
           .replace(/\*\*(.*?)\*\*/g, '<span class="font-bold">$1</span>')
           .replace(/\*(.*?)\*/g, '<span class="italic">$1</span>');
         
@@ -101,7 +138,6 @@ export default function Home() {
     return formattedContent;
   };
 
-  // Function to render documentation content with proper code highlighting
   const renderDocContent = (content) => {
     const sections = [];
     const lines = content.split('\n');
@@ -113,7 +149,6 @@ export default function Home() {
     lines.forEach((line, index) => {
       if (line.startsWith('```')) {
         if (inCodeBlock) {
-          // End of code block
           sections.push({
             type: 'text',
             content: currentSection.join('\n')
@@ -128,19 +163,15 @@ export default function Home() {
           codeBlockContent = '';
           currentSection = [];
         } else {
-          // Start of code block
           inCodeBlock = true;
           codeBlockLanguage = line.slice(3).trim() || 'plaintext';
         }
       } else if (inCodeBlock) {
-        // Inside code block
         codeBlockContent += line + '\n';
       } else {
-        // Regular text
         currentSection.push(line);
       }
       
-      // Handle last line
       if (index === lines.length - 1 && currentSection.length > 0) {
         sections.push({
           type: 'text',
@@ -224,6 +255,12 @@ export default function Home() {
                         {new Date(doc.createdAt).toLocaleDateString()}
                       </div>
                     </button>
+                    <button
+                      onClick={() => deleteDocument(doc._id)}
+                      className="mt-2 text-sm text-red-600 hover:underline"
+                    >
+                      Delete
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -234,32 +271,52 @@ export default function Home() {
                 <div className="bg-white rounded-lg shadow-md overflow-hidden">
                   {docs.filter(doc => doc._id === activeDoc).map((doc) => (
                     <div key={doc._id}>
-                      <div className="bg-indigo-50 p-4 border-b border-indigo-100">
-                        <h3 className="font-bold text-xl text-indigo-800">
-                          {doc.filename}
-                        </h3>
-                        <p className="text-sm text-indigo-500 mt-1">
-                          Generated on {new Date(doc.createdAt).toLocaleString()}
-                        </p>
+                      <div className="bg-indigo-50 p-4 border-b border-indigo-100 flex justify-between items-center">
+                        <div>
+                          <h3 className="font-bold text-xl text-indigo-800">
+                            {doc.filename}
+                          </h3>
+                          <p className="text-sm text-indigo-500 mt-1">
+                            Generated on {new Date(doc.createdAt).toLocaleString()}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => handleEdit(doc)}
+                          className="px-4 py-2 bg-indigo-600 text-white rounded-md"
+                        >
+                          Edit
+                        </button>
+                      </div>
+                      <div className="p-5">
+                        {isEditing ? (
+                          <div>
+                            <textarea
+                              value={editedContent}
+                              onChange={(e) => setEditedContent(e.target.value)}
+                              className="w-full h-64 border rounded-md p-2"
+                            />
+                            <div className="mt-4">
+                              <button
+                                onClick={() => saveEditedDocument(activeDoc)}
+                                className="px-4 py-2 bg-indigo-600 text-white rounded-md mr-2"
+                              >
+                                Save
+                              </button>
+                              <button
+                                onClick={() => setIsEditing(false)}
+                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="prose max-w-none">
+                            {renderDocContent(doc.content)}
+                          </div>
+                        )}
                       </div>
                       
-                      <div className="p-5">
-                        {/* <div className="mb-6 bg-indigo-50 rounded-lg p-4 border border-indigo-100">
-                          <h4 className="font-bold text-indigo-700 mb-2">Key Points</h4>
-                          <ul className="space-y-1">
-                            {extractKeyPoints(doc.content).map((point, index) => (
-                              <li key={index} className="flex items-start">
-                                <span className="text-indigo-500 mr-2">•</span>
-                                <span>{point}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div> */}
-                        
-                        <div className="prose max-w-none">
-                          {renderDocContent(doc.content)}
-                        </div>
-                      </div>
                     </div>
                   ))}
                 </div>

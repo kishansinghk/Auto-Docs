@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
-const { uploadFile, getAllDocs } = require("../controllers/docsController");
+const { uploadFile, getAllDocs, updateDoc } = require("../controllers/docsController");
+const Model = require("../models/docsModel");
 
 const router = express.Router();
 const upload = multer({
@@ -29,5 +30,17 @@ const upload = multer({
 
 router.post("/upload", upload.single("file"), uploadFile);
 router.get("/docs", getAllDocs);
+
+router.put("/update/:id", updateDoc);
+
+router.delete("/delete/:id", async (req, res) => {
+  Model.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.status(200).json({ message: "Document deleted successfully" });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "Error deleting document" });
+    });
+})
 
 module.exports = router;
