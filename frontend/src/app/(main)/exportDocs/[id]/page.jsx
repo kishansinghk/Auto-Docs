@@ -1,17 +1,67 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function ExportPage() {
+  const params = useParams();
+  const router = useRouter();
   const [selectedFormat, setSelectedFormat] = useState('markdown');
   const [selectedTemplate, setSelectedTemplate] = useState('default');
+  const [document, setDocument] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [includeOptions, setIncludeOptions] = useState({
     codeSnippets: true,
     diagrams: true,
     apiReference: true,
     changelog: false
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem('user');
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    const fetchDocument = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/${params.id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setDocument(response.data);
+        toast.success('Document loaded successfully', {
+          duration: 4000,
+          position: "top-right",
+          style: {
+            background: "#063970",
+            color: "#fff",
+          },
+        });
+      } catch (error) {
+        console.error('Error fetching document:', error);
+        toast.error(error.response?.data?.error || 'Error loading document', {
+          duration: 4000,
+          position: "top-right",
+          style: {
+            background: "#f87171",
+            color: "#fff",
+          },
+        });
+        router.push('/user/uploadCode');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (params.id) {
+      fetchDocument();
+    }
+  }, [params.id, router]);
 
   const handleFormatChange = (format) => {
     setSelectedFormat(format);
@@ -28,9 +78,69 @@ export default function ExportPage() {
     }));
   };
 
-  const handleExport = () => {
-    // Add your export logic here
+  const handleExport = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('user');
+      
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+
+      const response = await axios.post(`http://localhost:5000/api/export/${params.id}`, {
+        format: selectedFormat,
+        template: selectedTemplate,
+        options: includeOptions
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        responseType: 'blob'
+      });
+
+      // Create a download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      const filename = document?.filename || 'documentation';
+      link.setAttribute('download', `${filename}.${selectedFormat}`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+      // Clean up and show success message
+      window.URL.revokeObjectURL(url);
+      toast.success('Document exported successfully', {
+        duration: 4000,
+        position: "top-right",
+        style: {
+          background: "#063970",
+          color: "#fff",
+        },
+      });
+    } catch (error) {
+      console.error('Error exporting document:', error);
+      toast.error(error.response?.data?.error || 'Error exporting document', {
+        duration: 4000,
+        position: "top-right",
+        style: {
+          background: "#f87171",
+          color: "#fff",
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0a192f] text-gray-100 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0a192f] text-gray-100">
@@ -198,7 +308,7 @@ export default function ExportPage() {
               transition={{ duration: 0.8 }}
               className="space-y-8"
             >
-              {/* Preview Card */}
+              {/* Preview Card with actual document content */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -208,19 +318,11 @@ export default function ExportPage() {
                 <h2 className="text-2xl font-bold mb-6 text-white">Preview</h2>
                 <div className="bg-[#0a192f] rounded-lg p-4 border border-gray-700 h-96 overflow-y-auto">
                   <div className="prose prose-invert max-w-none">
-                    <h3 className="text-blue-400">Documentation Preview</h3>
-                    <p className="text-gray-300">
-                      This is a preview of how your documentation will look when exported.
-                      The actual content will be generated based on your selected options.
-                    </p>
-                    <div className="mt-4 p-4 bg-[#112240] rounded-lg">
-                      <code className="text-gray-300">
-                        // Example code snippet
-                        function example() {'{'}
-                          return "Hello, World!";
-                        {'}'}
-                      </code>
-                    </div>
+                    {document ? (
+                      <div dangerouslySetInnerHTML={{ __html: document.content }} />
+                    ) : (
+                      <p className="text-gray-400">Loading document preview...</p>
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -236,9 +338,17 @@ export default function ExportPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleExport}
-                  className="w-full py-4 px-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  disabled={loading}
+                  className="w-full py-4 px-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Export Documentation
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
+                      Processing...
+                    </div>
+                  ) : (
+                    'Export Documentation'
+                  )}
                 </motion.button>
                 <p className="text-center text-gray-400 mt-4">
                   Your documentation will be generated and downloaded in the selected format.
@@ -247,7 +357,7 @@ export default function ExportPage() {
             </motion.div>
           </div>
 
-          {/* Feedback Section */}
+          {/* Feedback Section with proper link */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -264,9 +374,9 @@ export default function ExportPage() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={() => router.push('/feedback')}
                 className="px-8 py-3 bg-[#0a192f] text-blue-400 rounded-lg font-semibold border border-blue-500/50 hover:bg-blue-500/10 hover:border-blue-400 transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
               >
-                <a href="feedback"></a>
                 Provide Feedback
               </motion.button>
             </div>

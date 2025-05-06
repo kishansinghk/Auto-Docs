@@ -24,52 +24,52 @@ const uploadFile = async (req, res) => {
       Please provide a detailed analysis in Markdown format with the following sections:
       
       ## Code Overview
-      * Purpose: [bullet point description of the code's purpose]
+      # Purpose: [bullet point description of the code's purpose ]
       
-      * Functionality: [bullet point description of how it works]
+      # Functionality: [bullet point description of how it works]
       
-      * Architecture: [bullet points about architecture]
+      # Architecture: [bullet points about architecture]
       
-      * Key technical decisions:
+      # Key technical decisions:
         * [First decision and rationale]
       
         * [Second decision and rationale]
       
         * [Additional points as needed]
       
-      * Integration points with other system components:
+      # Integration points with other system components:
         * [First integration point]
       
         * [Second integration point]
       
         * [Additional points as needed]
       
-      * Error handling approach:
+      # Error handling approach:
         * [Error handling strategy]
       
         * [Implementation details]
       
       ## Technical Analysis
       ### Code Structure
-      * Organization:
+      # Organization:
         * [Key structure point 1]
       
         * [Key structure point 2]
       
-      * Module/class hierarchy:
+      # Module/class hierarchy:
         * [First hierarchical relationship]
       
         * [Second hierarchical relationship]
       
-      * Design patterns:
+      # Design patterns:
         * [First pattern]
       
         * [Second pattern]
       
-      * Code complexity assessment:
+      # Code complexity assessment:
         * [Complexity observations]
       
-      * Architectural considerations:
+      # Architectural considerations:
         * [First consideration]
       
         * [Second consideration]
@@ -93,12 +93,12 @@ const uploadFile = async (req, res) => {
         * Side effects: [any state mutations]
       
       ### Dependencies
-      * Primary dependencies:
+      # Primary dependencies:
         * [First dependency and version]
       
         * [Second dependency and version]
       
-      * Dependency injection patterns:
+      # Dependency injection patterns:
         * [Pattern description if applicable]
       
         * External API interactions:
@@ -110,12 +110,12 @@ const uploadFile = async (req, res) => {
         * [Requirement 2]
       
       ### Data Management
-      * Data structures:
+      # Data structures:
         * [Structure 1 and rationale]
       
         * [Structure 2 and rationale]
       
-      * State management:
+      # State management:
         * [Approach used]
       
         * Data validation:
@@ -128,7 +128,7 @@ const uploadFile = async (req, res) => {
         * [Caching strategy if implemented]
       
       ### Security Considerations
-      * Authentication/Authorization:
+      # Authentication/Authorization:
         * [Mechanism details]
       
         * Input validation:
@@ -145,7 +145,7 @@ const uploadFile = async (req, res) => {
         * [Vulnerability 2]
       
       ### Performance Analysis
-      * Optimization techniques:
+      # Optimization techniques:
         * [Technique 1]
       
         * [Technique 2]
@@ -167,7 +167,7 @@ const uploadFile = async (req, res) => {
         * [Capabilities]
       
       ### Error Handling
-      * Error scenarios:
+      # Error scenarios:
         * [Scenario 1]
       
         * [Scenario 2]
@@ -184,7 +184,7 @@ const uploadFile = async (req, res) => {
         * [Capability details]
       
       ### Testing Considerations
-      * Unit testing:
+      # Unit testing:
         * [Approach details]
       
         * Integration testing:
@@ -204,7 +204,7 @@ const uploadFile = async (req, res) => {
         * [Recommendation details]
       
       ### API Documentation (if applicable)
-      * API specifications:
+      # API specifications:
         * [Endpoint 1]
       
         * [Endpoint 2]
@@ -242,7 +242,7 @@ const uploadFile = async (req, res) => {
           \`\`\`
       
       ### Maintenance and Scalability
-      * Maintainability factors:
+      # Maintainability factors:
         * [Factor 1]
       
         * [Factor 2]
@@ -268,27 +268,27 @@ const uploadFile = async (req, res) => {
         * [Consideration 2]
       
       ### Development Guidelines
-      * Coding standards:
+      # Coding standards:
         * [Standard 1]
       
         * [Standard 2]
       
-        * Documentation practices:
+        #  Documentation practices:
         * [Practice 1]
       
         * [Practice 2]
       
-        * Version control:
+        # Version control:
         * [Practice 1]
       
         * [Practice 2]
       
-        * Code review checklist:
+        # Code review checklist:
         * [Item 1]
       
         * [Item 2]
       
-        * Development environment:
+        # Development environment:
         * [Setup detail 1]
       
         * [Setup detail 2]
@@ -359,4 +359,151 @@ const updateDoc = async (req, res) => {
   }
 };
 
-module.exports = { uploadFile, getAllDocs, updateDoc };
+const getDocById = async (req, res) => {
+  try {
+    const doc = await Documentation.findById(req.params.id);
+    if (!doc) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
+    res.json(doc);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching document' });
+  }
+};
+
+const exportDoc = async (req, res) => {
+  try {
+    const { format, template, options } = req.body;
+    const doc = await Documentation.findById(req.params.id);
+    
+    if (!doc) {
+      return res.status(404).json({ error: 'Document not found' });
+    }
+
+    let content = doc.content;
+    
+    // Apply template formatting
+    switch (template) {
+      case 'minimal':
+        content = applyMinimalTemplate(content, options);
+        break;
+      case 'technical':
+        content = applyTechnicalTemplate(content, options);
+        break;
+      default:
+        content = applyDefaultTemplate(content, options);
+    }
+
+    // Convert to requested format
+    let exportedContent;
+    let contentType;
+    
+    switch (format) {
+      case 'pdf':
+        exportedContent = await convertToPdf(content);
+        contentType = 'application/pdf';
+        break;
+      case 'html':
+        exportedContent = convertToHtml(content);
+        contentType = 'text/html';
+        break;
+      case 'docx':
+        exportedContent = await convertToDocx(content);
+        contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        break;
+      default: // markdown
+        exportedContent = Buffer.from(content);
+        contentType = 'text/markdown';
+    }
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `attachment; filename=${doc.filename}.${format}`);
+    res.send(exportedContent);
+  } catch (error) {
+    console.error('Export error:', error);
+    res.status(500).json({ error: 'Error exporting document' });
+  }
+};
+
+function applyDefaultTemplate(content, options) {
+  // Filter content based on options
+  if (!options.codeSnippets) {
+    content = content.replace(/```[\s\S]*?```/g, '');
+  }
+  if (!options.diagrams) {
+    content = content.replace(/\[diagram\][\s\S]*?\[\/diagram\]/g, '');
+  }
+  if (!options.apiReference) {
+    content = content.replace(/\[api\][\s\S]*?\[\/api\]/g, '');
+  }
+  return content;
+}
+
+function applyMinimalTemplate(content, options) {
+  content = applyDefaultTemplate(content, options);
+  // Add minimal styling and structure
+  return `# ${content.split('\n')[0]}\n\n${content.split('\n').slice(1).join('\n')}`;
+}
+
+function applyTechnicalTemplate(content, options) {
+  content = applyDefaultTemplate(content, options);
+  // Add technical documentation structure
+  const date = new Date().toISOString().split('T')[0];
+  return `# Technical Documentation\n\nGenerated: ${date}\n\n${content}`;
+}
+
+function convertToHtml(markdown) {
+  // Convert markdown to HTML using a library like marked
+  const marked = require('marked');
+  const html = marked(markdown);
+  return Buffer.from(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <style>
+          body { font-family: system-ui, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 2rem; }
+          pre { background: #f6f8fa; padding: 1rem; border-radius: 4px; }
+          code { font-family: monospace; }
+        </style>
+      </head>
+      <body>${html}</body>
+    </html>
+  `);
+}
+
+async function convertToPdf(markdown) {
+  // Convert markdown to PDF using a library like puppeteer
+  const puppeteer = require('puppeteer');
+  const html = convertToHtml(markdown);
+  
+  const browser = await puppeteer.launch({ headless: 'new' });
+  const page = await browser.newPage();
+  await page.setContent(html);
+  const pdf = await page.pdf({ format: 'A4', margin: { top: '2cm', bottom: '2cm', left: '2cm', right: '2cm' } });
+  await browser.close();
+  
+  return pdf;
+}
+
+async function convertToDocx(markdown) {
+  // Convert markdown to DOCX using a library like mammoth or docx
+  const docx = require('docx');
+  const { Document, Paragraph, TextRun } = docx;
+  
+  const doc = new Document({
+    sections: [{
+      properties: {},
+      children: markdown.split('\n').map(line => 
+        new Paragraph({
+          children: [new TextRun(line)]
+        })
+      )
+    }]
+  });
+
+  const buffer = await docx.Packer.toBuffer(doc);
+  return buffer;
+}
+
+module.exports = { uploadFile, getAllDocs, updateDoc, getDocById, exportDoc };

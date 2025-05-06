@@ -18,6 +18,7 @@ export default function UploadCodePage() {
   const [activeDoc, setActiveDoc] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState('');
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('user');
@@ -199,6 +200,11 @@ export default function UploadCodePage() {
         },
       });
     }
+  };
+
+  const handleDownload = (docId) => {
+    setIsDownloading(true);
+    router.push(`/exportDocs/${docId}`);
   };
 
   const renderDocContent = (content) => {
@@ -522,14 +528,31 @@ export default function UploadCodePage() {
                         </div>
                       </button>
                       <div className="flex gap-2 mt-2">
-              
                         <button
-                          onClick={() => downloadDocument(doc._id)}
-                          className="text-sm text-green-400 hover:text-green-300 transition-colors"
+                          onClick={() => handleDownload(doc._id)}
+                          disabled={isDownloading}
+                          className="text-sm text-green-400 hover:text-green-300 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed group"
                         >
-                          <link href="/exportDocs" />
-                          Download
-                          </button>
+                          {isDownloading ? (
+                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-green-400"></div>
+                          ) : (
+                            <svg 
+                              xmlns="http://www.w3.org/2000/svg" 
+                              className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" 
+                              fill="none" 
+                              viewBox="0 0 24 24" 
+                              stroke="currentColor"
+                            >
+                              <path 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                strokeWidth={2} 
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" 
+                              />
+                            </svg>
+                          )}
+                          {isDownloading ? 'Redirecting...' : 'Download'}
+                        </button>
                         <button
                           onClick={() => handleEdit(doc)}
                           className="text-sm text-blue-400 hover:text-blue-300 transition-colors"

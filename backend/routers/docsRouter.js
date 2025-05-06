@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
-const { uploadFile, getAllDocs, updateDoc } = require("../controllers/docsController");
+const { uploadFile, getAllDocs, updateDoc, getDocById, exportDoc } = require("../controllers/docsController");
+const { authMiddleware } = require("../middleware/authMiddleware");
 const Model = require("../models/docsModel");
 
 const router = express.Router();
@@ -28,12 +29,14 @@ const upload = multer({
   },
 });
 
-router.post("/upload", upload.single("file"), uploadFile);
-router.get("/docs", getAllDocs);
+// Protected routes
+router.post("/upload", authMiddleware, upload.single("file"), uploadFile);
+router.get("/docs", authMiddleware, getAllDocs);
+router.put("/update/:id", authMiddleware, updateDoc);
+router.get('/:id', authMiddleware, getDocById);
+router.post('/export/:id', authMiddleware, exportDoc);
 
-router.put("/update/:id", updateDoc);
-
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", authMiddleware, async (req, res) => {
   Model.findByIdAndDelete(req.params.id)
     .then(() => {
       res.status(200).json({ message: "Document deleted successfully" });
