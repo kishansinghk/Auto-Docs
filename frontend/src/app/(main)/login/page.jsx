@@ -1,8 +1,10 @@
 'use client';
+import React from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import React from 'react'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as Yup from 'yup';
@@ -12,7 +14,7 @@ const loginSchema = Yup.object().shape({
   password: Yup.string().min(7, 'Password is too short').required('Required'),
 });
 
-const Login = () => {
+export default function Page() {
   const router = useRouter();
 
   const loginForm = useFormik({
@@ -21,8 +23,6 @@ const Login = () => {
       password: '',
     },
     onSubmit: (values, { resetForm }) => {
-      // console.log(values);
-
       axios.post('http://localhost:5000/user/authenticate', values)
         .then((response) => {
           console.log(response.data);
@@ -39,66 +39,180 @@ const Login = () => {
   });
 
   return (
-    <div className='flex justify-center items-center h-screen'>
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
-          Login to AutoDocs
-        </h2>
-        <form onSubmit={loginForm.handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-600" htmlFor="email">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              onChange={loginForm.handleChange}
-              value={loginForm.values.email}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required=""
-            />
-            {(loginForm.errors.email && loginForm.touched.email) ? (
-              <p className='text-sm text-red-600'>{loginForm.errors.email}</p>
-            ) : null}
+    <div className="min-h-screen bg-[#0a192f] text-gray-100">
+      <div className="container mx-auto px-4 py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-md mx-auto"
+        >
+          {/* Logo and Back Link */}
+          <div className="flex items-center justify-between mb-8">
+            <Link href="/" className="flex items-center group">
+              <motion.span 
+                className="text-2xl mr-2 text-blue-400 group-hover:text-blue-300 transition-colors duration-300"
+                whileHover={{ scale: 1.1 }}
+              >
+                📄
+              </motion.span>
+              <span className="text-xl font-bold group-hover:text-blue-300 transition-colors duration-300">AutoDocs</span>
+            </Link>
+            <Link 
+              href="/" 
+              className="text-gray-400 hover:text-blue-400 transition-colors duration-300 flex items-center"
+            >
+              <span className="mr-2">←</span> Back to Home
+            </Link>
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-600" htmlFor="password">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              onChange={loginForm.handleChange}
-              value={loginForm.values.password}
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required=""
-            />
-            {(loginForm.errors.password && loginForm.touched.password) ? (
-              <p className='text-sm text-red-600'>{loginForm.errors.password}</p>
-            ) : null}
-          </div>
-          <div className="flex justify-between items-center mb-4">
-            <a href="#" className="text-blue-500 text-sm">
-              Forgot Password?
-            </a>
-          </div>
-          <button
-            type="submit"
-            className="w-full active:bg-blue-800 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+
+          {/* Login Form */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-[#112240] rounded-xl shadow-2xl p-8 border border-gray-800"
           >
-            Login
-          </button>
-        </form>
-        <p className="text-sm text-gray-600 mt-4 text-center">
-          Don't have an account?{" "}
-          <a href="/signup" className="text-blue-500">
-            Sign Up
-          </a>
-        </p>
+            <h1 className="text-3xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+              Welcome Back
+            </h1>
+            <p className="text-gray-400 mb-8">
+              Sign in to continue to your AutoDocs account.
+            </p>
+
+            <form onSubmit={loginForm.handleSubmit} className="space-y-6">
+              {/* Email Field */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  onChange={loginForm.handleChange}
+                  value={loginForm.values.email}
+                  className={`w-full px-4 py-3 rounded-lg bg-[#0a192f] border ${
+                    loginForm.errors.email && loginForm.touched.email ? 'border-red-500' : 'border-gray-700'
+                  } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-white transition-all duration-300`}
+                  placeholder="john@example.com"
+                />
+                {loginForm.errors.email && loginForm.touched.email && (
+                  <p className="mt-1 text-sm text-red-500">{loginForm.errors.email}</p>
+                )}
+              </motion.div>
+
+              {/* Password Field */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  onChange={loginForm.handleChange}
+                  value={loginForm.values.password}
+                  className={`w-full px-4 py-3 rounded-lg bg-[#0a192f] border ${
+                    loginForm.errors.password && loginForm.touched.password ? 'border-red-500' : 'border-gray-700'
+                  } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-white transition-all duration-300`}
+                  placeholder="••••••••"
+                />
+                {loginForm.errors.password && loginForm.touched.password && (
+                  <p className="mt-1 text-sm text-red-500">{loginForm.errors.password}</p>
+                )}
+              </motion.div>
+
+              {/* Remember Me and Forgot Password */}
+              <div className="flex items-center justify-between">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  className="flex items-center"
+                >
+                  <input
+                    type="checkbox"
+                    id="remember"
+                    className="w-4 h-4 rounded border-gray-700 bg-[#0a192f] text-blue-500 focus:ring-blue-500/20"
+                  />
+                  <label htmlFor="remember" className="ml-2 text-sm text-gray-400">
+                    Remember me
+                  </label>
+                </motion.div>
+                <Link 
+                  href="/forgot-password" 
+                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors duration-300"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
+              {/* Submit Button */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Sign In
+              </motion.button>
+            </form>
+
+            {/* Social Login */}
+            <div className="mt-8">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-700"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-[#112240] text-gray-400">Or continue with</span>
+                </div>
+              </div>
+
+              <div className="mt-6 grid grid-cols-3 gap-3">
+                {[
+                  { icon: '🐦', label: 'Twitter' },
+                  { icon: '🔗', label: 'GitHub' },
+                  { icon: '📘', label: 'Google' }
+                ].map((social, index) => (
+                  <motion.button
+                    key={index}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full py-2 px-4 border border-gray-700 rounded-lg flex items-center justify-center text-gray-400 hover:text-blue-400 hover:border-blue-400 transition-all duration-300"
+                  >
+                    <span className="text-xl mr-2">{social.icon}</span>
+                    <span className="text-sm">{social.label}</span>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+
+            {/* Signup Link */}
+            <div className="mt-8 text-center">
+              <p className="text-gray-400">
+                Don't have an account?{' '}
+                <Link 
+                  href="/signup" 
+                  className="text-blue-400 hover:text-blue-300 transition-colors duration-300"
+                >
+                  Sign up
+                </Link>
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
-
+      <ToastContainer />
     </div>
-  )
+  );
 }
-
-export default Login;

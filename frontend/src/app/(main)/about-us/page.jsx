@@ -1,275 +1,271 @@
-'use client';   
-import { useState, useEffect } from 'react';
-import { Users, Target, File, Award, ChevronDown, ChevronUp, Mail, Moon, Sun } from 'lucide-react';
+'use client';
+import React from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
-export default function AboutUs() {
-  const [activeSection, setActiveSection] = useState('mission');
-  const [expandedCard, setExpandedCard] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
-
-  // Initialize theme based on user preference
-  useEffect(() => {
-    // Check if user has a preference stored
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      setDarkMode(true);
-      document.documentElement.classList.add('dark');
-    } else if (savedTheme === null) {
-      // Check system preference if no stored preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setDarkMode(prefersDark);
-      if (prefersDark) document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  // Function to toggle dark mode
-  const toggleDarkMode = () => {
-    if (darkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    }
-    setDarkMode(!darkMode);
-  };
-
-  const toggleSection = (section) => {
-    setActiveSection(section);
-  };
-
-  const toggleCard = (cardId) => {
-    if (expandedCard === cardId) {
-      setExpandedCard(null);
-    } else {
-      setExpandedCard(cardId);
-    }
-  };
-
-  // Team members data
-  const teamMembers = [
-    {
-      id: 1,
-      name: "Kishan Singh",
-      role: "Founder & CEO",
-      bio: "Former software engineer with extensive experience in software development. Kishan founded AutoDocs after experiencing firsthand the frustrations of documentation management in tech companies."
-    },
-    {
-      id: 2,
-      name: "Adarsh Singh",
-      role: "Employee",
-      bio: "Experienced software developer specializing in building robust and scalable applications."
-    }
-  ];
-
+export default function AboutPage() {
   return (
-    <div className={`font-sans min-h-screen ${darkMode ? 'dark' : ''} transition-colors duration-300`}>
-      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
-        {/* Dark Mode Toggle */}
-        <div className="fixed top-6 right-6 z-10">
-          <button 
-            onClick={toggleDarkMode}
-            className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-            aria-label="Toggle dark mode"
+    <div className="min-h-screen bg-[#0a192f] text-gray-100">
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 bg-gradient-to-br from-[#0a192f] via-[#112240] to-[#1d4ed8]">
+        <div className="container mx-auto px-4 text-center">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
           >
-            {darkMode ? 
-              <Sun size={24} className="text-yellow-400" /> : 
-              <Moon size={24} className="text-gray-700" />
-            }
-          </button>
+            About AutoDocs
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-xl max-w-3xl mx-auto mb-8 text-gray-300"
+          >
+            Revolutionizing software documentation with AI-powered solutions. Our mission is to make documentation effortless and efficient for developers worldwide.
+          </motion.p>
         </div>
+      </section>
 
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-900 text-white py-16 pt-24">
-          <div className="max-w-4xl mx-auto px-6">
-            <h1 className="text-4xl font-bold mb-4">About AutoDocs</h1>
-            <p className="text-xl mb-8">Revolutionizing technical documentation through the power of AI</p>
-            <div className="flex flex-wrap gap-4">
-              <button 
-                onClick={() => toggleSection('mission')}
-                className={`py-2 px-4 rounded-full transition-all ${activeSection === 'mission' 
-                  ? 'bg-white text-blue-600 dark:bg-gray-800 dark:text-blue-400 font-medium' 
-                  : 'bg-blue-700 hover:bg-blue-800 dark:bg-blue-900 dark:hover:bg-blue-800'}`}
-              >
-                Our Mission
-              </button>
-              <button 
-                onClick={() => toggleSection('team')}
-                className={`py-2 px-4 rounded-full transition-all ${activeSection === 'team' 
-                  ? 'bg-white text-blue-600 dark:bg-gray-800 dark:text-blue-400 font-medium' 
-                  : 'bg-blue-700 hover:bg-blue-800 dark:bg-blue-900 dark:hover:bg-blue-800'}`}
-              >
-                Our Team
-              </button>
-              <button 
-                onClick={() => toggleSection('values')}
-                className={`py-2 px-4 rounded-full transition-all ${activeSection === 'values' 
-                  ? 'bg-white text-blue-600 dark:bg-gray-800 dark:text-blue-400 font-medium' 
-                  : 'bg-blue-700 hover:bg-blue-800 dark:bg-blue-900 dark:hover:bg-blue-800'}`}
-              >
-                Our Values
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Content Section */}
-        <div className="max-w-4xl mx-auto py-12 px-6">
-          {/* Mission Section */}
-          {activeSection === 'mission' && (
-            <div className="animate-fadeIn">
-              <div className="flex items-center mb-8">
-                <Target size={32} className="text-blue-600 dark:text-blue-400 mr-4" />
-                <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Our Mission</h2>
-              </div>
-              
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-                At AutoDocs, we're on a mission to transform how technical documentation is created, maintained, and utilized. We believe that great documentation is the backbone of successful software, and that no developer should waste precious time struggling with outdated or unclear documentation.
-              </p>
-
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8 hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-3">The Documentation Challenge</h3>
-                <p className="text-gray-700 dark:text-gray-300">
-                  Documentation has long been the neglected aspect of software development - often outdated, incomplete, or difficult to navigate. This leads to countless wasted hours, increased onboarding time, and frustration for developers worldwide.
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8 hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-3">Our Solution</h3>
-                <p className="text-gray-700 dark:text-gray-300">
-                  AutoDocs leverages cutting-edge AI to automatically generate, update, and enhance technical documentation. Our platform integrates seamlessly with your codebase, analyzes changes in real-time, and maintains documentation that is always accurate, comprehensive, and accessible.
-                </p>
-              </div>
-
-              <div className="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-600 dark:border-blue-500 p-6 rounded">
-                <h3 className="text-xl font-semibold text-blue-800 dark:text-blue-300 mb-2">Our Promise</h3>
-                <p className="text-blue-800 dark:text-blue-300">
-                  We're committed to saving developers thousands of hours worldwide, accelerating software development, and making knowledge sharing effortless. With AutoDocs, documentation is no longer a burden—it's an asset.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Team Section */}
-          {activeSection === 'team' && (
-            <div className="animate-fadeIn">
-              <div className="flex items-center mb-8">
-                <Users size={32} className="text-blue-600 dark:text-blue-400 mr-4" />
-                <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Our Team</h2>
-              </div>
-              
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-                AutoDocs is built by a passionate team of engineers, AI specialists, and documentation experts who understand the challenges of technical documentation firsthand.
-              </p>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                {teamMembers.map(member => (
-                  <div 
-                    key={member.id} 
-                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden cursor-pointer transition-all"
-                    onClick={() => toggleCard(member.id)}
-                  >
-                    <div className="p-6">
-                      <div className="flex justify-between items-center">
-                        <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{member.name}</h3>
-                        {expandedCard === member.id ? 
-                          <ChevronUp size={20} className="dark:text-gray-400" /> : 
-                          <ChevronDown size={20} className="dark:text-gray-400" />}
-                      </div>
-                      <p className="text-blue-600 dark:text-blue-400 font-medium">{member.role}</p>
-                      
-                      {expandedCard === member.id && (
-                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 animate-fadeIn">
-                          <p className="text-gray-700 dark:text-gray-300">{member.bio}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-10 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-3">Join Our Team</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
-                  We're always looking for talented individuals who are passionate about documentation, AI, and creating tools that developers love.
-                </p>
-                <a href="#careers" className="inline-block bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition-colors">
-                  View Open Positions
-                </a>
-              </div>
-            </div>
-          )}
-
-          {/* Values Section */}
-          {activeSection === 'values' && (
-            <div className="animate-fadeIn">
-              <div className="flex items-center mb-8">
-                <Award size={32} className="text-blue-600 dark:text-blue-400 mr-4" />
-                <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Our Values</h2>
-              </div>
-              
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-                These core principles guide everything we do at AutoDocs, from product development to customer interactions.
-              </p>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-10">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-t-4 border-blue-600">
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Developer-First</h3>
-                  <p className="text-gray-700 dark:text-gray-300">
-                    We build every feature with developers in mind, ensuring our solutions solve real problems and integrate seamlessly into existing workflows.
-                  </p>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-t-4 border-green-600">
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Continuous Innovation</h3>
-                  <p className="text-gray-700 dark:text-gray-300">
-                    We're constantly pushing the boundaries of what's possible with AI and documentation technology, staying ahead of industry trends.
-                  </p>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-t-4 border-purple-600">
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Knowledge Accessibility</h3>
-                  <p className="text-gray-700 dark:text-gray-300">
-                    We believe information should be accessible to everyone, regardless of their experience level or background in software development.
-                  </p>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border-t-4 border-yellow-600">
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Customer Success</h3>
-                  <p className="text-gray-700 dark:text-gray-300">
-                    Your success is our success. We're committed to providing exceptional support and ensuring you get maximum value from AutoDocs.
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-8 flex flex-col items-center text-center">
-                <File size={48} className="text-blue-600 dark:text-blue-400 mb-4" />
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Our Documentation Manifesto</h3>
-                <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-                  We believe documentation should be a living, breathing asset that evolves with your code—not an afterthought or burden.
-                </p>
-                <a href="#manifesto" className="inline-block bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition-colors">
-                  Read Our Full Manifesto
-                </a>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Contact CTA */}
-        <div className="bg-gray-900 dark:bg-gray-950 text-white py-12">
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-2xl font-bold mb-4">Have Questions About AutoDocs?</h2>
-            <p className="text-lg text-gray-300 dark:text-gray-400 mb-6">
-              Our team is ready to help you revolutionize your documentation workflow.
+      {/* Our Story Section */}
+      <section className="py-20 bg-[#112240]">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-bold text-blue-400 mb-4">Our Story</h2>
+            <p className="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">
+              Born from the frustration of manual documentation, AutoDocs was created to transform how developers document their code.
             </p>
-            <div className="inline-flex items-center bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-full transition-colors">
-              <Mail size={20} className="mr-2" />
-              Contact Us Today
-            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                year: "2023",
+                title: "The Beginning",
+                description: "Founded with a vision to automate documentation processes using AI technology."
+              },
+              {
+                year: "2024",
+                title: "First Release",
+                description: "Launched our MVP with core features for automated documentation generation."
+              },
+              {
+                year: "2025",
+                title: "Growth",
+                description: "Expanded our platform with advanced features and a growing user base."
+              }
+            ].map((milestone, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-[#0a192f] p-8 rounded-xl shadow-lg hover:shadow-blue-500/20 transition-all duration-300 border border-gray-800 hover:border-blue-500/50"
+              >
+                <div className="text-blue-400 text-2xl font-bold mb-4">{milestone.year}</div>
+                <h3 className="text-xl font-bold mb-3 text-white">{milestone.title}</h3>
+                <p className="text-gray-400">{milestone.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-20 bg-gradient-to-br from-[#0a192f] to-[#112240]">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-bold text-blue-400 mb-4">Our Team</h2>
+            <p className="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">
+              A passionate team of developers, designers, and AI experts working together to revolutionize documentation.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Kshitij Singh",
+                role: "Founder & CEO",
+                image: "https://avatars.githubusercontent.com/u/12345678?v=4",
+                social: {
+                  github: "#",
+                  linkedin: "#",
+                  twitter: "#"
+                }
+              },
+              {
+                name: "Jane Smith",
+                role: "Lead Developer",
+                image: "https://avatars.githubusercontent.com/u/87654321?v=4",
+                social: {
+                  github: "#",
+                  linkedin: "#",
+                  twitter: "#"
+                }
+              },
+              {
+                name: "Mike Johnson",
+                role: "AI Engineer",
+                image: "https://avatars.githubusercontent.com/u/98765432?v=4",
+                social: {
+                  github: "#",
+                  linkedin: "#",
+                  twitter: "#"
+                }
+              }
+            ].map((member, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-[#112240] rounded-xl overflow-hidden shadow-lg hover:shadow-blue-500/20 transition-all duration-300 border border-gray-800 hover:border-blue-500/50"
+              >
+                <div className="relative h-64 overflow-hidden">
+                  <motion.img
+                    whileHover={{ scale: 1.05 }}
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
+                  <p className="text-blue-400 mb-4">{member.role}</p>
+                  <div className="flex space-x-4">
+                    {Object.entries(member.social).map(([platform, link], i) => (
+                      <motion.a
+                        key={i}
+                        href={link}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                      >
+                        {platform === 'github' ? '🐙' : platform === 'linkedin' ? '🔗' : '🐦'}
+                      </motion.a>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section className="py-20 bg-[#112240]">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-bold text-blue-400 mb-4">Our Values</h2>
+            <p className="text-xl text-gray-300 mt-4 max-w-3xl mx-auto">
+              The principles that guide everything we do at AutoDocs.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              {
+                icon: "🚀",
+                title: "Innovation",
+                description: "Constantly pushing boundaries to create better solutions for developers."
+              },
+              {
+                icon: "💡",
+                title: "Simplicity",
+                description: "Making complex processes simple and accessible to everyone."
+              },
+              {
+                icon: "🤝",
+                title: "Collaboration",
+                description: "Working together to build the best possible product."
+              },
+              {
+                icon: "🎯",
+                title: "Excellence",
+                description: "Striving for the highest quality in everything we do."
+              }
+            ].map((value, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-[#0a192f] p-8 rounded-xl shadow-lg hover:shadow-blue-500/20 transition-all duration-300 border border-gray-800 hover:border-blue-500/50"
+              >
+                <div className="text-blue-400 text-4xl mb-4">{value.icon}</div>
+                <h3 className="text-xl font-bold mb-3 text-white">{value.title}</h3>
+                <p className="text-gray-400">{value.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="container mx-auto px-4 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold mb-6 text-white"
+          >
+            Join Our Journey
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-xl max-w-2xl mx-auto mb-8 text-gray-100"
+          >
+            Be part of the revolution in software documentation.
+          </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="flex flex-col sm:flex-row justify-center gap-4"
+          >
+            <Link 
+              href="/careers" 
+              className="px-8 py-3 bg-white text-blue-600 rounded-md font-semibold hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg"
+            >
+              Join Our Team
+            </Link>
+            <Link 
+              href="/contact" 
+              className="px-8 py-3 border-2 border-white text-white rounded-md font-semibold hover:bg-white hover:text-blue-600 hover:scale-105 transition-all duration-300"
+            >
+              Get in Touch
+            </Link>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

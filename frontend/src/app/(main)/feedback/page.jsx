@@ -1,121 +1,234 @@
 'use client';
-import { useState } from 'react';
-import { Send, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
-export default function FeedbackForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [feedback, setFeedback] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
+export default function FeedbackPage() {
+  const [feedbackType, setFeedbackType] = useState('suggestion');
+  const [rating, setRating] = useState(0);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Simple validation
-    if (!name || !email || !feedback) {
-      setError('Please fill in all fields');
-      return;
-    }
-    
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-    
-    // In a real implementation, you would send the feedback data to your backend
-    console.log({ name, email, feedback });
-    
-    setError('');
-    setSubmitted(true);
-    
-    // Reset form after submission
-    setTimeout(() => {
-      setName('');
-      setEmail('');
-      setFeedback('');
-      setSubmitted(false);
-    }, 3000);
+    // Add your feedback submission logic here
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold text-gray-800">We Value Your Feedback</h1>
-        <p className="text-gray-600 mt-2">Help us improve our documentation</p>
-      </div>
-
-      {submitted ? (
-        <div className="bg-green-50 p-6 rounded-lg text-center">
-          <div className="flex justify-center mb-4">
-            <Sparkles className="text-green-500" size={24} />
-          </div>
-          <h2 className="text-lg font-medium text-green-800">Thank you for your feedback!</h2>
-          <p className="text-green-700 mt-2">We appreciate your input and will use it to improve our documentation.</p>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="bg-red-50 p-3 rounded text-red-700 text-sm">
-              {error}
-            </div>
-          )}
-          
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Your name"
-            />
-          </div>
-          
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="your.email@example.com"
-            />
-          </div>
-          
-          <div>
-            <label htmlFor="feedback" className="block text-sm font-medium text-gray-700 mb-1">
-              Feedback
-            </label>
-            <textarea
-              id="feedback"
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              rows={5}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Please share your thoughts, suggestions, or report any issues you've encountered..."
-            />
-          </div>
-          
-          <div className="pt-2">
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center transition-colors"
+    <div className="min-h-screen bg-[#0a192f] text-gray-100">
+      <div className="container mx-auto px-4 py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto"
+        >
+          {/* Header Section */}
+          <div className="text-center mb-16">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
             >
-              <Send size={18} className="mr-2" />
-              Submit Feedback
-            </button>
+              Share Your Feedback
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-xl text-gray-300 max-w-2xl mx-auto"
+            >
+              Help us improve AutoDocs by sharing your thoughts and suggestions.
+            </motion.p>
           </div>
-        </form>
-      )}
+
+          {/* Feedback Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="bg-[#112240] rounded-xl shadow-2xl p-8 border border-gray-800"
+          >
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Feedback Type Selection */}
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold text-white">Type of Feedback</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {[
+                    { id: 'suggestion', label: 'Suggestion', icon: '💡' },
+                    { id: 'bug', label: 'Bug Report', icon: '🐛' },
+                    { id: 'feature', label: 'Feature Request', icon: '✨' }
+                  ].map((type) => (
+                    <motion.button
+                      key={type.id}
+                      type="button"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setFeedbackType(type.id)}
+                      className={`p-4 rounded-lg border transition-all duration-300 ${
+                        feedbackType === type.id
+                          ? 'bg-blue-500/20 border-blue-500 text-blue-400'
+                          : 'bg-[#0a192f] border-gray-700 text-gray-400 hover:border-blue-500/50'
+                      }`}
+                    >
+                      <span className="text-2xl mb-2 block">{type.icon}</span>
+                      <span className="font-medium">{type.label}</span>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Rating Section */}
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold text-white">How would you rate your experience?</h2>
+                <div className="flex justify-center gap-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <motion.button
+                      key={star}
+                      type="button"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => setRating(star)}
+                      className="text-4xl"
+                    >
+                      <span className={rating >= star ? 'text-yellow-400' : 'text-gray-600'}>
+                        ★
+                      </span>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Form Fields */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.8 }}
+                >
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-[#0a192f] border border-gray-700 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300"
+                    placeholder="Your name"
+                    required
+                  />
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.9 }}
+                >
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-[#0a192f] border border-gray-700 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300"
+                    placeholder="your@email.com"
+                    required
+                  />
+                </motion.div>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 }}
+              >
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-[#0a192f] border border-gray-700 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300"
+                  placeholder="Brief description of your feedback"
+                  required
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.1 }}
+              >
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  rows="6"
+                  className="w-full px-4 py-3 bg-[#0a192f] border border-gray-700 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300"
+                  placeholder="Please provide detailed feedback..."
+                  required
+                />
+              </motion.div>
+
+              {/* Submit Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.2 }}
+                className="pt-4"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="w-full py-4 px-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Submit Feedback
+                </motion.button>
+              </motion.div>
+            </form>
+          </motion.div>
+
+          {/* Thank You Message */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.4 }}
+            className="mt-12 text-center"
+          >
+            <p className="text-gray-300">
+              Thank you for helping us improve AutoDocs! We appreciate your time and feedback.
+            </p>
+            <Link 
+              href="/"
+              className="inline-block mt-4 text-blue-400 hover:text-blue-300 transition-colors duration-300"
+            >
+              ← Back to Home
+            </Link>
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }

@@ -1,97 +1,77 @@
-'use client'
-import { useState } from 'react';
-import { Send, Loader2 } from 'lucide-react';
+'use client';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    subject: '',
+    message: '',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState({ type: '', text: '' });
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitMessage({ 
-        type: 'success', 
-        text: 'Thank you for your message. We will get back to you soon!' 
-      });
-      setFormData({ name: '', email: '', message: '' });
-    }, 1500);
+    // Add your form validation and submission logic here
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 pt-24">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8 rounded-lg">
-          <h1 className="text-3xl font-bold sm:text-4xl">Contact Us</h1>
-          <p className="mt-4 text-lg">
-            Have questions about Autodocs? We're here to help.
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#0a192f] text-gray-100">
+      <div className="container mx-auto px-4 py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-6xl mx-auto"
+        >
+          {/* Header Section */}
+          <div className="text-center mb-16">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"
+            >
+              Get in Touch
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-xl text-gray-300 max-w-2xl mx-auto"
+            >
+              Have questions about AutoDocs? We're here to help. Reach out to us and we'll get back to you as soon as possible.
+            </motion.p>
+          </div>
 
-        {/* Contact Form Section */}
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="md:flex">
-            {/* Left side - Contact Info */}
-            <div className="bg-blue-600 text-white p-8 md:w-1/3">
-              <h3 className="text-xl font-semibold mb-6">Contact Information</h3>
-              <div className="space-y-6">
-                <div>
-                  <p className="font-medium">Email</p>
-                  <p className="mt-1">support@autodocs.com</p>
-                </div>
-                <div>
-                  <p className="font-medium">Phone</p>
-                  <p className="mt-1">(123) 456-7890</p>
-                </div>
-                <div>
-                  <p className="font-medium">Address</p>
-                  <p className="mt-1">
-                    123 Documentation Lane<br />
-                    Suite 456<br />
-                    San Francisco, CA 94107
-                  </p>
-                </div>
-              </div>
-              <div className="mt-12">
-                <p className="font-medium">Follow Us</p>
-                <div className="flex space-x-4 mt-2">
-                  <a href="#" className="hover:text-blue-200">Twitter</a>
-                  <a href="#" className="hover:text-blue-200">LinkedIn</a>
-                  <a href="#" className="hover:text-blue-200">GitHub</a>
-                </div>
-              </div>
-            </div>
-
-            {/* Right side - Form */}
-            <div className="p-8 md:w-2/3">
-              <h3 className="text-xl font-semibold mb-6">Send us a message</h3>
-              
-              {submitMessage.text && (
-                <div className={`mb-6 p-4 rounded ${submitMessage.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                  {submitMessage.text}
-                </div>
-              )}
-              
-              <form onSubmit={handleSubmit}>
-                <div className="mb-6">
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="grid md:grid-cols-2 gap-12">
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="bg-[#112240] rounded-xl shadow-2xl p-8 border border-gray-800"
+            >
+              <h2 className="text-2xl font-bold mb-6 text-white">Send us a Message</h2>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Name Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
                     Full Name
                   </label>
                   <input
@@ -100,14 +80,18 @@ export default function ContactPage() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 rounded-lg bg-[#0a192f] border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-white transition-all duration-300"
                     placeholder="John Doe"
                   />
-                </div>
-                
-                <div className="mb-6">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                </motion.div>
+
+                {/* Email Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                >
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
                     Email Address
                   </label>
                   <input
@@ -116,14 +100,38 @@ export default function ContactPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 rounded-lg bg-[#0a192f] border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-white transition-all duration-300"
                     placeholder="john@example.com"
                   />
-                </div>
-                
-                <div className="mb-6">
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                </motion.div>
+
+                {/* Subject Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-lg bg-[#0a192f] border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-white transition-all duration-300"
+                    placeholder="How can we help?"
+                  />
+                </motion.div>
+
+                {/* Message Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
                     Message
                   </label>
                   <textarea
@@ -131,53 +139,124 @@ export default function ContactPage() {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    required
-                    rows="5"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="How can we help you?"
+                    rows="4"
+                    className="w-full px-4 py-3 rounded-lg bg-[#0a192f] border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-white transition-all duration-300"
+                    placeholder="Your message here..."
                   ></textarea>
-                </div>
-                
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-300 flex items-center justify-center font-medium"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="animate-spin mr-2 h-5 w-5" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-5 w-5" />
-                      Send Message
-                    </>
-                  )}
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
+                </motion.div>
 
-        {/* FAQ Section */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            <div className="bg-white shadow rounded-lg p-6">
-              <h3 className="font-semibold text-lg text-gray-900">What is Autodocs?</h3>
-              <p className="mt-2 text-gray-600">Autodocs is an intelligent documentation platform that helps teams create, manage, and share documentation effortlessly.</p>
-            </div>
-            <div className="bg-white shadow rounded-lg p-6">
-              <h3 className="font-semibold text-lg text-gray-900">Do you offer a free trial?</h3>
-              <p className="mt-2 text-gray-600">Yes! We offer a 14-day free trial with no credit card required. You can explore all features during this period.</p>
-            </div>
-            <div className="bg-white shadow rounded-lg p-6">
-              <h3 className="font-semibold text-lg text-gray-900">How quickly do you respond to inquiries?</h3>
-              <p className="mt-2 text-gray-600">We typically respond to all inquiries within 24 hours during business days. Premium support plans receive priority responses.</p>
-            </div>
+                {/* Submit Button */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Send Message
+                </motion.button>
+              </form>
+            </motion.div>
+
+            {/* Contact Information */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="space-y-8"
+            >
+              {/* Contact Cards */}
+              <div className="grid gap-6">
+                {[
+                  {
+                    icon: "✉️",
+                    title: "Email",
+                    content: "ks9520125@gmail.com",
+                    link: "mailto:ks9520125@gmail.com"
+                  },
+                  {
+                    icon: "📞",
+                    title: "Phone",
+                    content: "9026872887",
+                    link: "tel:9026872887"
+                  },
+                  {
+                    icon: "📍",
+                    title: "Location",
+                    content: "Lucknow, Uttar Pradesh",
+                    link: "#"
+                  }
+                ].map((contact, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                    className="bg-[#112240] rounded-xl p-6 border border-gray-800 hover:border-blue-500/50 transition-all duration-300"
+                  >
+                    <div className="flex items-start">
+                      <span className="text-2xl mr-4 text-blue-400">{contact.icon}</span>
+                      <div>
+                        <h3 className="text-lg font-semibold text-white mb-1">{contact.title}</h3>
+                        <a 
+                          href={contact.link} 
+                          className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          {contact.content}
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Social Media */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                className="bg-[#112240] rounded-xl p-6 border border-gray-800"
+              >
+                <h3 className="text-lg font-semibold text-white mb-4">Follow Us</h3>
+                <div className="flex space-x-4">
+                  {[
+                    { icon: "🐦", label: "Twitter", link: "#" },
+                    { icon: "🔗", label: "LinkedIn", link: "#" },
+                    { icon: "🐙", label: "GitHub", link: "#" },
+                    { icon: "📘", label: "Facebook", link: "#" }
+                  ].map((social, index) => (
+                    <motion.a
+                      key={index}
+                      href={social.link}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="text-2xl text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                    >
+                      {social.icon}
+                    </motion.a>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* FAQ Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+                className="bg-[#112240] rounded-xl p-6 border border-gray-800"
+              >
+                <h3 className="text-lg font-semibold text-white mb-4">Frequently Asked Questions</h3>
+                <div className="space-y-4">
+                  <Link 
+                    href="/faq" 
+                    className="block text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                  >
+                    View our FAQ page for common questions
+                  </Link>
+                </div>
+              </motion.div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
