@@ -21,19 +21,9 @@ app.use('/user', UserRouter);
 app.use('/api', docsRouter);
 
 
-//routes or endpoints
-app.get('/', (req, res) => {
-    res.send('Response From Express')
-})
 
-app.post('/add', (req, res) => {
-    res.send('Response From Add Route')
-})
 
-app.get('/getall', (req, res) => {
-    res.send('Response From Get All Route')
-})
 
 app.listen(port, () => {
-    console.log(`Server is running on Port - ${port}`)
+    console.log(`Server is running on Port - ${port}`)
 })

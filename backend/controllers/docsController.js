@@ -1,6 +1,11 @@
 const fs = require("fs");
 const Documentation = require("../models/docsModel");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const markdownpdf = require('markdown-pdf');
+const htmlpdf = require('html-pdf');
+const { Document, Paragraph, TextRun } = require('docx');
+const fsPromises = require('fs').promises;
+const path = require('path');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -115,7 +120,7 @@ const uploadFile = async (req, res) => {
       
         * [Structure 2 and rationale]
       
-      # State management:
+        # State management:
         * [Approach used]
       
         * Data validation:
@@ -373,56 +378,120 @@ const getDocById = async (req, res) => {
 
 const exportDoc = async (req, res) => {
   try {
-    const { format, template, options } = req.body;
-    const doc = await Documentation.findById(req.params.id);
-    
+    const { id } = req.params;
+    const { format } = req.body;
+    const doc = await Documentation.findById(id);
+
     if (!doc) {
       return res.status(404).json({ error: 'Document not found' });
     }
 
-    let content = doc.content;
-    
-    // Apply template formatting
-    switch (template) {
-      case 'minimal':
-        content = applyMinimalTemplate(content, options);
-        break;
-      case 'technical':
-        content = applyTechnicalTemplate(content, options);
-        break;
-      default:
-        content = applyDefaultTemplate(content, options);
-    }
+    const tempDir = path.join(__dirname, '../temp');
+    await fsPromises.mkdir(tempDir, { recursive: true });
 
-    // Convert to requested format
-    let exportedContent;
-    let contentType;
-    
     switch (format) {
-      case 'pdf':
-        exportedContent = await convertToPdf(content);
-        contentType = 'application/pdf';
-        break;
-      case 'html':
-        exportedContent = convertToHtml(content);
-        contentType = 'text/html';
-        break;
-      case 'docx':
-        exportedContent = await convertToDocx(content);
-        contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-        break;
-      default: // markdown
-        exportedContent = Buffer.from(content);
-        contentType = 'text/markdown';
-    }
+      case 'markdown':
+        // For markdown, just send the content directly
+        res.setHeader('Content-Type', 'text/markdown');
+        res.setHeader('Content-Disposition', `attachment; filename=${doc.filename}.md`);
+        return res.send(doc.content);
 
-    res.setHeader('Content-Type', contentType);
-    res.setHeader('Content-Disposition', `attachment; filename=${doc.filename}.${format}`);
-    res.send(exportedContent);
+      case 'pdf':
+        // Convert markdown to PDF
+        const pdfPath = path.join(tempDir, `${doc.filename}.pdf`);
+        await new Promise((resolve, reject) => {
+          markdownpdf()
+            .from.string(doc.content)
+            .to(pdfPath, function (err) {
+              if (err) reject(err);
+              else resolve();
+            });
+        });
+        const pdfContent = await fsPromises.readFile(pdfPath);
+        await fsPromises.unlink(pdfPath);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=${doc.filename}.pdf`);
+        return res.send(pdfContent);
+
+      case 'html':
+        // Convert markdown to HTML
+        const htmlContent = markdownToHtml(doc.content);
+        res.setHeader('Content-Type', 'text/html');
+        res.setHeader('Content-Disposition', `attachment; filename=${doc.filename}.html`);
+        return res.send(htmlContent);
+
+      case 'docx':
+        // Create Word document
+        const docx = new Document({
+          sections: [{
+            properties: {},
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun(doc.content)
+                ],
+              }),
+            ],
+          }],
+        });
+
+        const docxPath = path.join(tempDir, `${doc.filename}.docx`);
+        const buffer = await docx.save();
+        await fsPromises.writeFile(docxPath, buffer);
+        const docxContent = await fsPromises.readFile(docxPath);
+        await fsPromises.unlink(docxPath);
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        res.setHeader('Content-Disposition', `attachment; filename=${doc.filename}.docx`);
+        return res.send(docxContent);
+
+      default:
+        return res.status(400).json({ error: 'Unsupported format' });
+    }
   } catch (error) {
     console.error('Export error:', error);
     res.status(500).json({ error: 'Error exporting document' });
   }
+};
+
+const markdownToHtml = (markdown) => {
+  // Simple markdown to HTML conversion
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Exported Documentation</title>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+          line-height: 1.6;
+          padding: 2em;
+          max-width: 900px;
+          margin: 0 auto;
+        }
+        pre {
+          background-color: #f5f5f5;
+          padding: 1em;
+          border-radius: 4px;
+          overflow-x: auto;
+        }
+        code {
+          font-family: 'Courier New', Courier, monospace;
+        }
+      </style>
+    </head>
+    <body>
+      ${markdown
+        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>')
+        .replace(/\n/g, '<br>')}
+    </body>
+    </html>
+  `;
 };
 
 function applyDefaultTemplate(content, options) {

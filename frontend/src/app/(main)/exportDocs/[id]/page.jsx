@@ -4,13 +4,82 @@ import { motion } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import CodeBlock from '@/components/syntaxHilighter';
+
+const renderDocContent = (content) => {
+  const sections = [];
+  const lines = content.split('\n');
+  let currentSection = [];
+  let inCodeBlock = false;
+  let codeBlockContent = '';
+  let codeBlockLanguage = '';
+  
+  lines.forEach((line, index) => {
+    if (line.startsWith('```')) {
+      if (inCodeBlock) {
+        sections.push({
+          type: 'text',
+          content: currentSection.join('\n')
+        });
+        sections.push({
+          type: 'code',
+          language: codeBlockLanguage,
+          content: codeBlockContent
+        });
+        
+        inCodeBlock = false;
+        codeBlockContent = '';
+        currentSection = [];
+      } else {
+        inCodeBlock = true;
+        codeBlockLanguage = line.slice(3).trim() || 'plaintext';
+      }
+    } else if (inCodeBlock) {
+      codeBlockContent += line + '\n';
+    } else {
+      currentSection.push(line);
+    }
+    
+    if (index === lines.length - 1 && currentSection.length > 0) {
+      sections.push({
+        type: 'text',
+        content: currentSection.join('\n')
+      });
+    }
+  });
+  
+  return (
+    <>
+      {sections.map((section, index) => {
+        if (section.type === 'code') {
+          return <CodeBlock key={index} language={section.language} code={section.content.trim()} />;
+        } else {
+          return (
+            <div 
+              key={index}
+              className="mb-4"
+              dangerouslySetInnerHTML={{ 
+                __html: section.content
+                  .replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold text-blue-400 mt-6 mb-3">$1</h1>')
+                  .replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold text-blue-300 mt-5 mb-2">$1</h2>')
+                  .replace(/^### (.*$)/gm, '<h3 class="text-lg font-bold text-blue-200 mt-4 mb-2">$1</h3>')
+                  .replace(/\*\*(.*?)\*\*/g, '<span class="font-bold">$1</span>')
+                  .replace(/\*(.*?)\*/g, '<span class="italic">$1</span>')
+              }}
+            />
+          );
+        }
+      })}
+    </>
+  );
+};
 
 export default function ExportPage() {
   const params = useParams();
   const router = useRouter();
   const [selectedFormat, setSelectedFormat] = useState('markdown');
   const [selectedTemplate, setSelectedTemplate] = useState('default');
-  const [document, setDocument] = useState(null);
+  const [docData, setDocData] = useState(null);  // Renamed from 'document' to 'docData'
   const [loading, setLoading] = useState(true);
   const [includeOptions, setIncludeOptions] = useState({
     codeSnippets: true,
@@ -33,7 +102,7 @@ export default function ExportPage() {
             'Authorization': `Bearer ${token}`
           }
         });
-        setDocument(response.data);
+        setDocData(response.data);  // Using the renamed state variable
         toast.success('Document loaded successfully', {
           duration: 4000,
           position: "top-right",
@@ -99,19 +168,36 @@ export default function ExportPage() {
         responseType: 'blob'
       });
 
-      // Create a download link
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      const filename = document?.filename || 'documentation';
-      link.setAttribute('download', `${filename}.${selectedFormat}`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      // Get the content type and set the file extension
+      const contentType = response.headers['content-type'];
+      let fileExtension = selectedFormat;
       
-      // Clean up and show success message
-      window.URL.revokeObjectURL(url);
-      toast.success('Document exported successfully', {
+      // Map content types to file extensions
+      if (contentType === 'application/pdf') {
+        fileExtension = 'pdf';
+      } else if (contentType === 'text/markdown') {
+        fileExtension = 'md';
+      } else if (contentType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+        fileExtension = 'docx';
+      } else if (contentType === 'text/html') {
+        fileExtension = 'html';
+      }
+
+      // Create a blob URL and trigger download using the Blob API
+      if (typeof window !== 'undefined') {
+        const blob = new Blob([response.data], { type: contentType });
+        const url = window.URL.createObjectURL(blob);
+        const link = window.document.createElement('a');  // Using window.document instead of document
+        link.style.display = 'none';
+        link.href = url;
+        link.download = `${docData?.filename || 'documentation'}.${fileExtension}`;  // Using the renamed variable
+        window.document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(url);
+        window.document.body.removeChild(link);
+      }
+      
+      toast.success(`Document exported successfully as ${fileExtension.toUpperCase()}`, {
         duration: 4000,
         position: "top-right",
         style: {
@@ -318,8 +404,8 @@ export default function ExportPage() {
                 <h2 className="text-2xl font-bold mb-6 text-white">Preview</h2>
                 <div className="bg-[#0a192f] rounded-lg p-4 border border-gray-700 h-96 overflow-y-auto">
                   <div className="prose prose-invert max-w-none">
-                    {document ? (
-                      <div dangerouslySetInnerHTML={{ __html: document.content }} />
+                    {docData ? (
+                      renderDocContent(docData.content)
                     ) : (
                       <p className="text-gray-400">Loading document preview...</p>
                     )}

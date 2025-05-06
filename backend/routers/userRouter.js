@@ -3,6 +3,7 @@ const Model = require('../models/userModel'); //importing user model
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 
+
 router.post('/add', (req, res) => {
     console.log(req.body);
 
@@ -23,7 +24,7 @@ router.post('/add', (req, res) => {
 
 
 
-router.get('/getall', (req, res) => {
+router.get('/getall',  (req, res) => {
     Model.find()
     .then((result) => {
         res.status(200).json(result);
