@@ -19,286 +19,67 @@ const uploadFile = async (req, res) => {
     const fileContent = fs.readFileSync(req.file.path, "utf-8");
 
     // AI Model - Updated model name to the current version
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     try {
       const prompt = `Generate comprehensive technical documentation for this code:
       
       ${fileContent}
       
-      Please provide a detailed analysis in Markdown format with the following sections:
-      
-      ## Code Overview
-      # Purpose: [bullet point description of the code's purpose ]
-      
-      # Functionality: [bullet point description of how it works]
-      
-      # Architecture: [bullet points about architecture]
-      
-      # Key technical decisions:
-        * [First decision and rationale]
-      
-        * [Second decision and rationale]
-      
-        * [Additional points as needed]
-      
-      # Integration points with other system components:
-        * [First integration point]
-      
-        * [Second integration point]
-      
-        * [Additional points as needed]
-      
-      # Error handling approach:
-        * [Error handling strategy]
-      
-        * [Implementation details]
-      
-      ## Technical Analysis
-      ### Code Structure
-      # Organization:
-        * [Key structure point 1]
-      
-        * [Key structure point 2]
-      
-      # Module/class hierarchy:
-        * [First hierarchical relationship]
-      
-        * [Second hierarchical relationship]
-      
-      # Design patterns:
-        * [First pattern]
-      
-        * [Second pattern]
-      
-      # Code complexity assessment:
-        * [Complexity observations]
-      
-      # Architectural considerations:
-        * [First consideration]
-      
-        * [Second consideration]
-      
-      ### Implementation Details
-      For each function, class, or module:
-      * Name: [function/class/module name]
-      
-        * Signature: [parameters, return types, exceptions]
-      
-        * Complexity: [Big O notation where applicable]
-      
-        * Memory usage: [observations]
-      
-        * Error handling: [approach used]
-      
-        * Async operations: [how they're handled]
-      
-        * Data flow: [description]
-      
-        * Side effects: [any state mutations]
-      
-      ### Dependencies
-      # Primary dependencies:
-        * [First dependency and version]
-      
-        * [Second dependency and version]
-      
-      # Dependency injection patterns:
-        * [Pattern description if applicable]
-      
-        * External API interactions:
-        * [API and interaction details]
-      
-        * System requirements:
-        * [Requirement 1]
-      
-        * [Requirement 2]
-      
-      ### Data Management
-      # Data structures:
-        * [Structure 1 and rationale]
-      
-        * [Structure 2 and rationale]
-      
-        # State management:
-        * [Approach used]
-      
-        * Data validation:
-        * [Validation methods]
-      
-        * Database interactions:
-        * [Database details if applicable]
-      
-        * Caching mechanisms:
-        * [Caching strategy if implemented]
-      
-      ### Security Considerations
-      # Authentication/Authorization:
-        * [Mechanism details]
-      
-        * Input validation:
-        * [Approach used]
-      
-        * Security practices:
-        * [Practice 1]
-      
-        * [Practice 2]
-      
-        * Potential vulnerabilities:
-        * [Vulnerability 1]
-      
-        * [Vulnerability 2]
-      
-      ### Performance Analysis
-      # Optimization techniques:
-        * [Technique 1]
-      
-        * [Technique 2]
-      
-        * Resource usage:
-        * [Resource 1 usage pattern]
-      
-        * [Resource 2 usage pattern]
-      
-        * Bottlenecks:
-        * [Bottleneck 1]
-      
-        * [Bottleneck 2]
-      
-        * Caching strategies:
-        * [Strategy details]
-      
-        * Load handling:
-        * [Capabilities]
-      
-      ### Error Handling
-      # Error scenarios:
-        * [Scenario 1]
-      
-        * [Scenario 2]
-      
-        * Recovery mechanisms:
-        * [Mechanism 1]
-      
-        * [Mechanism 2]
-      
-        * Logging approach:
-        * [Approach details]
-      
-        * Debug capabilities:
-        * [Capability details]
-      
-      ### Testing Considerations
-      # Unit testing:
-        * [Approach details]
-      
-        * Integration testing:
-        * [Requirements]
-      
-        * Edge cases:
-        * [Case 1]
-      
-        * [Case 2]
-      
-        * Mock requirements:
-        * [Requirement 1]
-      
-        * [Requirement 2]
-      
-        * Coverage recommendations:
-        * [Recommendation details]
-      
-      ### API Documentation (if applicable)
-      # API specifications:
-        * [Endpoint 1]
-      
-        * [Endpoint 2]
-      
-        * Request/Response formats:
-        * [Format details]
-      
-        * Authentication:
-        * [Requirements]
-      
-        * Rate limiting:
-        * [Details]
-      
-        * Versioning strategy:
-        * [Strategy details]
-      
-      ### Code Examples
-      * Implementation:
-        * \`\`\`
-          [code example 1]
-          \`\`\`
-      
-        * \`\`\`
-          [code example 2]
-          \`\`\`
-      
-      * Integration:
-        * \`\`\`
-          [integration example]
-          \`\`\`
-      
-      * Error handling:
-        * \`\`\`
-          [error handling example]
-          \`\`\`
-      
-      ### Maintenance and Scalability
-      # Maintainability factors:
-        * [Factor 1]
-      
-        * [Factor 2]
-      
-        * Scalability patterns:
-        * [Pattern 1]
-      
-        * [Pattern 2]
-      
-        * Improvement areas:
-        * [Area 1]
-      
-        * [Area 2]
-      
-        * Technical debt:
-        * [Debt item 1]
-      
-        * [Debt item 2]
-      
-        * Upgrade considerations:
-        * [Consideration 1]
-      
-        * [Consideration 2]
-      
-      ### Development Guidelines
-      # Coding standards:
-        * [Standard 1]
-      
-        * [Standard 2]
-      
-        #  Documentation practices:
-        * [Practice 1]
-      
-        * [Practice 2]
-      
-        # Version control:
-        * [Practice 1]
-      
-        * [Practice 2]
-      
-        # Code review checklist:
-        * [Item 1]
-      
-        * [Item 2]
-      
-        # Development environment:
-        * [Setup detail 1]
-      
-        * [Setup detail 2]
-      
-      Please ensure all technical terms are accurately used and explained where necessary. Use clear bullet points throughout for better readability, and include code snippets, ASCII/markdown diagrams, tables, and links where relevant.`;
+     # Code Analysis Template
+
+## Code Overview
+- **Purpose**: [Brief description]
+- **Key Functionality**: [Core capabilities]
+- **Architecture**: [High-level structure]
+- **Technical Decisions**: [Major decisions and rationale]
+
+## Technical Analysis
+### Structure & Organization
+- **Module Hierarchy**: [Key components and relationships]
+- **Design Patterns**: [Patterns employed]
+- **Complexity Assessment**: [Evaluation of complexity]
+
+### Implementation Details
+For key components:
+- **Name & Purpose**: [Component name and function]
+- **Complexity**: [Big O notation where relevant]
+- **Error Handling**: [Approach to errors]
+- **Data Flow**: [How data moves through the component]
+
+### Dependencies & Integration
+- **External Dependencies**: [Major libraries/systems used]
+- **API Interactions**: [External service integration]
+- **System Requirements**: [Runtime needs]
+
+### Data Management
+- **Data Structures**: [Key structures used]
+- **State Management**: [How state is handled]
+- **Data Validation**: [Validation approach]
+
+### Security & Error Handling
+- **Security Measures**: [Key protections]
+- **Error Scenarios**: [Major failure modes]
+- **Recovery Mechanisms**: [How failures are handled]
+
+### Performance & Scalability
+- **Optimization Techniques**: [Performance enhancements]
+- **Bottlenecks**: [Performance limitations]
+- **Scalability Considerations**: [Growth capability]
+
+### Testing & Maintenance
+- **Testing Approach: [Strategy for validation]
+- **Edge Cases**: [Important boundary conditions]
+- **Maintainability Factors**: [Code quality metrics]
+- **Technical Debt**: [Areas needing improvement]
+
+### Code Examples
+
+
+### Development Guidelines
+- **Coding Standards**: [Key practices]
+- **Documentation Requirements**: [Documentation approach]
+- **Review Checklist**: [Key verification items]`;
       // Continue with sending the prompt to API...
 
       const result = await model.generateContent(prompt);
@@ -482,11 +263,11 @@ const markdownToHtml = (markdown) => {
     </head>
     <body>
       ${markdown
-        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^### (.#$)/gm, '<h3>$1</h3>')
+        .replace(/^## (.#$)/gm, '<h2>$1</h2>')
+        .replace(/^# (.#$)/gm, '<h1>$1</h1>')
+        .replace(/\#\#(.#?)\#\#/g, '<strong>$1</strong>')
+        .replace(/\#(.#?)\#/g, '<em>$1</em>')
         .replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>')
         .replace(/\n/g, '<br>')}
     </body>
@@ -497,13 +278,13 @@ const markdownToHtml = (markdown) => {
 function applyDefaultTemplate(content, options) {
   // Filter content based on options
   if (!options.codeSnippets) {
-    content = content.replace(/```[\s\S]*?```/g, '');
+    content = content.replace(/```[\s\S]#?```/g, '');
   }
   if (!options.diagrams) {
-    content = content.replace(/\[diagram\][\s\S]*?\[\/diagram\]/g, '');
+    content = content.replace(/\[diagram\][\s\S]#?\[\/diagram\]/g, '');
   }
   if (!options.apiReference) {
-    content = content.replace(/\[api\][\s\S]*?\[\/api\]/g, '');
+    content = content.replace(/\[api\][\s\S]#?\[\/api\]/g, '');
   }
   return content;
 }
