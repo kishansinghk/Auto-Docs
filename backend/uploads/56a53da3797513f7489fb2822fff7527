@@ -1,0 +1,55 @@
+'use client';
+import React, { useState } from 'react'
+
+const TodoList = () => {
+
+    // let count = 8;
+    // const [count, setCount] = useState(0);
+    const [taskList, setTaskList] = useState([]);
+
+    const addNewTask = (e) => {
+        if (e.code === 'Enter'){
+            console.log(e.target.value);
+
+            const newTask = {text: e.target.value};
+            setTaskList([newTask, ...taskList])
+
+            e.target.value = '';
+        }
+    }
+
+    return (
+        <div className='h-screen bg-amber-200 py-20'>
+            <h1 className='text-4xl text-center font-bold'>Todo List</h1>
+            <div className='container mx-auto mt-10 flex justify-center items-center gap-10'>
+
+                {/* <h1 className='text-3xl '>{count}</h1>
+                <button className='p-5 bg-red-500 text-2xl font-bold' onClick={() => { setCount(count + 1); console.log(count); }} >+1</button>
+                <h1 className='text-3xl '>{count}</h1> */}
+                
+                <div className='p-5 border-b-2'>
+                    <input type="text" placeholder='Enter task here...' className='border-2 px-4 py-2 w-full' 
+                            onKeyDown={addNewTask}/>
+                </div>
+
+                <div className='p-5 w-full overflow-y-scroll h-60 border-2 rounded-lg shadow-lg'>
+                    {
+                        taskList.map((task, index) =>{
+                            return(
+                                <div className='p-5 border mb-4 shadow-lg' key={index}>
+                                    <p>{task.text}</p>
+
+                                  </div>  
+
+                            )
+                        })
+                    }
+                </div>
+
+
+            </div>
+        </div>
+    )
+}
+
+export default TodoList;
