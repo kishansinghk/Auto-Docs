@@ -48,7 +48,7 @@ export default function AutoDocsPreview() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mx-auto mt-16 rounded-lg shadow-2xl border border-gray-700 bg-[#112240] p-4 max-w-4xl hover:shadow-blue-500/20 transition-all duration-300"
+            className="mx-auto mt-16 rounded-lg shadow-2xl border border-gray-700 bg-[#112240] p-4 max-w-4xl hover:shadow-blue-500/20 duration-300transform hover:scale-105 transition duration-300 cyber-border scanner flex flex-col md:flex-row justify-between items-start md:items-center relative overflow-hidden"
           >
             <img src="/autodocs.png" alt="AutoDocs Platform Preview" className="w-full rounded" />
           </motion.div>
