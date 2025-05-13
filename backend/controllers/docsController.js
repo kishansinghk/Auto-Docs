@@ -29,16 +29,16 @@ const uploadFile = async (req, res) => {
      # Code Analysis Template
 
 ## Code Overview
-- #Purpose: [Brief description]
-- #Key Functionality**: [Core capabilities]
-- #Architecture**: [High-level structure]
-- #Technical Decisions**: [Major decisions and rationale]
+ #Purpose: [Brief description] 
+ #Key Functionality: [Core capabilities]
+ #Architecture: [High-level structure]
+ #Technical Decisions: [Major decisions and rationale]
 
 ## Technical Analysis
 ### Structure & Organization
-- #Module Hierarchy: [Key components and relationships]
-- #Design Patterns: [Patterns employed]
-- #Complexity Assessment: [Evaluation of complexity]
+ #Module Hierarchy: [Key components and relationships]
+ #Design Patterns: [Patterns employed]
+ #Complexity Assessment: [Evaluation of complexity]
 
 ### Implementation Details
 For key components:

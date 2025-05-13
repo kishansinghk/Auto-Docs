@@ -1,14 +1,13 @@
-const {Schema, model} = require('../connection');
+const mongoose = require('mongoose');
 
-const feedbackSchema = new Schema({
-    name: String,
-    email: {type:String, required:true,unique:true},
-    subject:{type:String,required:true},
-    feedback:{type:String,required:true},
-    createdAt:{type:Date,default:Date.now},
+const feedbackSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  message: String,
+  submittedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-
-
-
-module.exports = model('contact',feedbackSchema);
+module.exports = mongoose.model('Feedback', feedbackSchema);
