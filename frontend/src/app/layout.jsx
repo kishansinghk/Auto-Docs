@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar'
 import './globals.css'
+import { Toaster } from 'react-hot-toast'
 
 export const metadata = {
   title: 'AutoDocs - AI Documentation Generator',
@@ -10,8 +11,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Navbar/>
-        {children}
+        <Navbar />
+        <Toaster position='top-right' />
+        <div className='pt-16'>
+          {children}
+        </div>
       </body>
     </html>
   )

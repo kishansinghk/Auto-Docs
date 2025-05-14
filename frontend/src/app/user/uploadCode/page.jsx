@@ -21,7 +21,7 @@ export default function UploadCodePage() {
   const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
     if (!token) {
       router.push('/login');
     }
@@ -33,7 +33,7 @@ export default function UploadCodePage() {
     try {
       const { data } = await axios.get('http://localhost:5000/api/docs', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('user')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
       setDocs(data);
@@ -100,7 +100,7 @@ export default function UploadCodePage() {
       const response = await axios.post('http://localhost:5000/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('user')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
 
@@ -136,7 +136,7 @@ export default function UploadCodePage() {
     try {
       const response = await axios.delete(`http://localhost:5000/api/delete/${docId}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('user')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
       if (response.status === 200) {
@@ -174,7 +174,7 @@ export default function UploadCodePage() {
         content: editedContent,
       }, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('user')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
       if (response.status === 200) {
@@ -411,7 +411,7 @@ export default function UploadCodePage() {
                       onChange={handleFileChange}
                       className="hidden"
                       id="file-upload"
-                      accept=".js,.py,.java,.ts"
+                      accept=".js,.py,.java,.ts,.jsx,.tsx,.html"
                     />
                     <motion.label
                       htmlFor="file-upload"

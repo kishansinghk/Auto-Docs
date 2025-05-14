@@ -1,8 +1,6 @@
 const fs = require("fs");
 const Documentation = require("../models/docsModel");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const markdownpdf = require('markdown-pdf');
-const htmlpdf = require('html-pdf');
 const { Document, Paragraph, TextRun } = require('docx');
 const fsPromises = require('fs').promises;
 const path = require('path');
@@ -178,21 +176,11 @@ const exportDoc = async (req, res) => {
         return res.send(doc.content);
 
       case 'pdf':
-        // Convert markdown to PDF
-        const pdfPath = path.join(tempDir, `${doc.filename}.pdf`);
-        await new Promise((resolve, reject) => {
-          markdownpdf()
-            .from.string(doc.content)
-            .to(pdfPath, function (err) {
-              if (err) reject(err);
-              else resolve();
-            });
-        });
-        const pdfContent = await fsPromises.readFile(pdfPath);
-        await fsPromises.unlink(pdfPath);
+        // Convert markdown to PDF using Puppeteer
+        const pdfBuffer = await convertToPdf(doc.content);
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename=${doc.filename}.pdf`);
-        return res.send(pdfContent);
+        return res.send(pdfBuffer);
 
       case 'html':
         // Convert markdown to HTML
@@ -216,14 +204,11 @@ const exportDoc = async (req, res) => {
           }],
         });
 
-        const docxPath = path.join(tempDir, `${doc.filename}.docx`);
-        const buffer = await docx.save();
-        await fsPromises.writeFile(docxPath, buffer);
-        const docxContent = await fsPromises.readFile(docxPath);
-        await fsPromises.unlink(docxPath);
+        // Use docx.Packer.toBuffer instead of docx.save
+        const buffer = await require('docx').Packer.toBuffer(docx);
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
         res.setHeader('Content-Disposition', `attachment; filename=${doc.filename}.docx`);
-        return res.send(docxContent);
+        return res.send(buffer);
 
       default:
         return res.status(400).json({ error: 'Unsupported format' });
@@ -275,37 +260,11 @@ const markdownToHtml = (markdown) => {
   `;
 };
 
-function applyDefaultTemplate(content, options) {
-  // Filter content based on options
-  if (!options.codeSnippets) {
-    content = content.replace(/```[\s\S]#?```/g, '');
-  }
-  if (!options.diagrams) {
-    content = content.replace(/\[diagram\][\s\S]#?\[\/diagram\]/g, '');
-  }
-  if (!options.apiReference) {
-    content = content.replace(/\[api\][\s\S]#?\[\/api\]/g, '');
-  }
-  return content;
-}
-
-function applyMinimalTemplate(content, options) {
-  content = applyDefaultTemplate(content, options);
-  // Add minimal styling and structure
-  return `# ${content.split('\n')[0]}\n\n${content.split('\n').slice(1).join('\n')}`;
-}
-
-function applyTechnicalTemplate(content, options) {
-  content = applyDefaultTemplate(content, options);
-  // Add technical documentation structure
-  const date = new Date().toISOString().split('T')[0];
-  return `# Technical Documentation\n\nGenerated: ${date}\n\n${content}`;
-}
-
 function convertToHtml(markdown) {
   // Convert markdown to HTML using a library like marked
   const marked = require('marked');
-  const html = marked(markdown);
+  // If marked is an object with a .parse method (modern versions), use it
+  const html = typeof marked === 'function' ? marked(markdown) : marked.parse(markdown);
   return Buffer.from(`
     <!DOCTYPE html>
     <html>
@@ -325,14 +284,16 @@ function convertToHtml(markdown) {
 async function convertToPdf(markdown) {
   // Convert markdown to PDF using a library like puppeteer
   const puppeteer = require('puppeteer');
-  const html = convertToHtml(markdown);
-  
+  // Ensure we pass a string to setContent, not a Buffer
+  const htmlBuffer = convertToHtml(markdown);
+  const html = htmlBuffer.toString();
+
   const browser = await puppeteer.launch({ headless: 'new' });
   const page = await browser.newPage();
-  await page.setContent(html);
+  await page.setContent(html, { waitUntil: 'networkidle0' });
   const pdf = await page.pdf({ format: 'A4', margin: { top: '2cm', bottom: '2cm', left: '2cm', right: '2cm' } });
   await browser.close();
-  
+
   return pdf;
 }
 

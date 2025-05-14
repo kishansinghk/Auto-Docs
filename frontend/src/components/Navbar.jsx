@@ -19,7 +19,7 @@ const Navbar = () => {
 
     // Add event listener for storage changes
     window.addEventListener('storage', checkLoginStatus)
-    
+
     // Add custom event listener for login state changes
     window.addEventListener('loginStateChanged', checkLoginStatus)
 
@@ -34,7 +34,7 @@ const Navbar = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     setIsLoggedIn(false)
-    
+
     toast.success('Logged out successfully!', {
       duration: 4000,
       position: "top-right",
@@ -43,7 +43,7 @@ const Navbar = () => {
         color: "#fff",
       },
     })
-    
+
     router.push('/')
   }
 
@@ -56,19 +56,31 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden md:flex items-center space-x-8">
-          <Link href="/tools" className="text-white/90 hover:text-white">Tools</Link>
-          <Link href="/contact-us" className="text-white/90 hover:text-white">Contact</Link>
+          {/* <Link href="/tools" className="text-white/90 hover:text-white">Tools</Link> */}
+
+          {isLoggedIn && (
+            <Link href="/user/uploadCode" className="text-white/90 hover:text-white">Upload Code</Link>
+          )}
+          <Link href="/contact-us" className="text-white/90 hover:text-white">Contact Us</Link>
           <Link href="/about-us" className="text-white/90 hover:text-white">About Us</Link>
         </div>
 
         <div className="flex items-center space-x-4">
           {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 rounded-md font-medium bg-white text-purple-700 hover:bg-gray-50"
-            >
-              Logout
-            </button>
+            <>
+              <Link
+                href="/user/profile"
+                className="px-4 py-2 rounded-md font-medium bg-white text-blue-700 hover:bg-gray-50"
+              >
+                Profile
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded-md font-medium bg-white text-purple-700 hover:bg-gray-50"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <>
               <Link

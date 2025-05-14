@@ -5,8 +5,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Navbar/>
-        {children}
+        <Navbar />
+        <div className='pt-16'>
+          {children}
+        </div>
       </body>
     </html>
   )
