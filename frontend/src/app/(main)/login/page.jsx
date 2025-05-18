@@ -1,42 +1,106 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import axios from 'axios';
-import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import * as Yup from 'yup';
+import { toast } from 'react-hot-toast';
 
-const loginSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().min(7, 'Password is too short').required('Required'),
-});
-
-export default function Page() {
+export default function LoginPage() {
   const router = useRouter();
-
-  const loginForm = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    onSubmit: (values, { resetForm }) => {
-      axios.post('http://localhost:5000/user/authenticate', values)
-        .then((response) => {
-          console.log(response.data);
-          toast.success('Login Successful');
-          localStorage.setItem('user', response.data.token);
-          resetForm();
-          router.push('/');
-        }).catch((err) => {
-          console.log(err);
-          toast.error('Login Failed');
-        });
-    },
-    validationSchema: loginSchema
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
   });
+
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const response = await axios.post('http://localhost:5000/user/authenticate', {
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (response.status === 200) {
+        // Store the token in localStorage
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        
+        // Dispatch custom event to notify navbar of login state change
+        window.dispatchEvent(new Event('loginStateChanged'));
+        
+        // Show success toast
+  
+        toast.success('Login successful! Welcome back!', {
+          duration: 4000,
+          position: "top-right",
+          style: {
+            background: "#063970",
+            color: "#fff",
+            borderRadius: "10px",
+            padding: "16px",
+          },
+        });
+
+        // Redirect to dashboard
+        router.push('/');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error(error.response?.data?.message || 'Invalid email or password', {
+        duration: 4000,
+        position: "top-right",
+        style: {
+          background: "#f87171",
+          color: "#fff",
+        },
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#0a192f] text-gray-100">
@@ -80,7 +144,7 @@ export default function Page() {
               Sign in to continue to your AutoDocs account.
             </p>
 
-            <form onSubmit={loginForm.handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Field */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -94,15 +158,15 @@ export default function Page() {
                   type="email"
                   id="email"
                   name="email"
-                  onChange={loginForm.handleChange}
-                  value={loginForm.values.email}
+                  value={formData.email}
+                  onChange={handleChange}
                   className={`w-full px-4 py-3 rounded-lg bg-[#0a192f] border ${
-                    loginForm.errors.email && loginForm.touched.email ? 'border-red-500' : 'border-gray-700'
+                    errors.email ? 'border-red-500' : 'border-gray-700'
                   } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-white transition-all duration-300`}
                   placeholder="john@example.com"
                 />
-                {loginForm.errors.email && loginForm.touched.email && (
-                  <p className="mt-1 text-sm text-red-500">{loginForm.errors.email}</p>
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-500">{errors.email}</p>
                 )}
               </motion.div>
 
@@ -119,15 +183,15 @@ export default function Page() {
                   type="password"
                   id="password"
                   name="password"
-                  onChange={loginForm.handleChange}
-                  value={loginForm.values.password}
+                  value={formData.password}
+                  onChange={handleChange}
                   className={`w-full px-4 py-3 rounded-lg bg-[#0a192f] border ${
-                    loginForm.errors.password && loginForm.touched.password ? 'border-red-500' : 'border-gray-700'
+                    errors.password ? 'border-red-500' : 'border-gray-700'
                   } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 text-white transition-all duration-300`}
                   placeholder="••••••••"
                 />
-                {loginForm.errors.password && loginForm.touched.password && (
-                  <p className="mt-1 text-sm text-red-500">{loginForm.errors.password}</p>
+                {errors.password && (
+                  <p className="mt-1 text-sm text-red-500">{errors.password}</p>
                 )}
               </motion.div>
 
@@ -161,9 +225,17 @@ export default function Page() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                disabled={isSubmitting}
+                className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Sign In
+                {isSubmitting ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
+                    Signing in...
+                  </div>
+                ) : (
+                  'Sign In'
+                )}
               </motion.button>
             </form>
 
@@ -212,7 +284,6 @@ export default function Page() {
           </motion.div>
         </motion.div>
       </div>
-      <ToastContainer />
     </div>
   );
-}
+} 

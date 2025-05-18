@@ -7,6 +7,4 @@ const uploadcodeSchema = new Schema({
 });
 
 
-
-
 module.exports = model('contact',uploadcodeSchema);

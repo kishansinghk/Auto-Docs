@@ -18,9 +18,10 @@ export default function UploadCodePage() {
   const [activeDoc, setActiveDoc] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState('');
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
     if (!token) {
       router.push('/login');
     }
@@ -32,7 +33,7 @@ export default function UploadCodePage() {
     try {
       const { data } = await axios.get('http://localhost:5000/api/docs', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('user')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
       setDocs(data);
@@ -99,7 +100,7 @@ export default function UploadCodePage() {
       const response = await axios.post('http://localhost:5000/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('user')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
 
@@ -135,7 +136,7 @@ export default function UploadCodePage() {
     try {
       const response = await axios.delete(`http://localhost:5000/api/delete/${docId}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('user')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
       if (response.status === 200) {
@@ -173,7 +174,7 @@ export default function UploadCodePage() {
         content: editedContent,
       }, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('user')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
       if (response.status === 200) {
@@ -202,7 +203,8 @@ export default function UploadCodePage() {
   };
 
   const handleDownload = (docId) => {
-    router.push(`/exportDocs?id=${docId}`);
+    setIsDownloading(true);
+    router.push(`/exportDocs/${docId}`);
   };
 
   const renderDocContent = (content) => {
@@ -409,7 +411,7 @@ export default function UploadCodePage() {
                       onChange={handleFileChange}
                       className="hidden"
                       id="file-upload"
-                      accept=".js,.py,.java,.ts"
+                      accept=".js,.py,.java,.ts,.jsx,.tsx,.html"
                     />
                     <motion.label
                       htmlFor="file-upload"
@@ -528,9 +530,28 @@ export default function UploadCodePage() {
                       <div className="flex gap-2 mt-2">
                         <button
                           onClick={() => handleDownload(doc._id)}
-                          className="text-sm text-green-400 hover:text-green-300 transition-colors"
+                          disabled={isDownloading}
+                          className="text-sm text-green-400 hover:text-green-300 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed group"
                         >
-                          Download
+                          {isDownloading ? (
+                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-green-400"></div>
+                          ) : (
+                            <svg 
+                              xmlns="http://www.w3.org/2000/svg" 
+                              className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" 
+                              fill="none" 
+                              viewBox="0 0 24 24" 
+                              stroke="currentColor"
+                            >
+                              <path 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                strokeWidth={2} 
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" 
+                              />
+                            </svg>
+                          )}
+                          {isDownloading ? 'Redirecting...' : 'Download'}
                         </button>
                         <button
                           onClick={() => handleEdit(doc)}

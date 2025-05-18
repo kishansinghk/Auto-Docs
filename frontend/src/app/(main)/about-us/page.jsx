@@ -98,8 +98,8 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                name: "Kshitij Singh",
-                role: "Founder & CEO",
+                name: "Kishan Singh",
+                role: "Lead Developer",
                 image: "https://avatars.githubusercontent.com/u/12345678?v=4",
                 social: {
                   github: "#",
@@ -108,7 +108,7 @@ export default function AboutPage() {
                 }
               },
               {
-                name: "Jane Smith",
+                name: "Adarsh Singh",
                 role: "Lead Developer",
                 image: "https://avatars.githubusercontent.com/u/87654321?v=4",
                 social: {
@@ -117,16 +117,8 @@ export default function AboutPage() {
                   twitter: "#"
                 }
               },
-              {
-                name: "Mike Johnson",
-                role: "AI Engineer",
-                image: "https://avatars.githubusercontent.com/u/98765432?v=4",
-                social: {
-                  github: "#",
-                  linkedin: "#",
-                  twitter: "#"
-                }
-              }
+              
+              
             ].map((member, index) => (
               <motion.div
                 key={index}
