@@ -201,6 +201,10 @@ export default function UploadCodePage() {
     }
   };
 
+  const handleDownload = (docId) => {
+    router.push(`/exportDocs?id=${docId}`);
+  };
+
   const renderDocContent = (content) => {
     const sections = [];
     const lines = content.split('\n');
@@ -522,14 +526,12 @@ export default function UploadCodePage() {
                         </div>
                       </button>
                       <div className="flex gap-2 mt-2">
-              
                         <button
-                          onClick={() => downloadDocument(doc._id)}
+                          onClick={() => handleDownload(doc._id)}
                           className="text-sm text-green-400 hover:text-green-300 transition-colors"
                         >
-                          <link href="/exportDocs" />
                           Download
-                          </button>
+                        </button>
                         <button
                           onClick={() => handleEdit(doc)}
                           className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
