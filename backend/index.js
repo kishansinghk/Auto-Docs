@@ -12,7 +12,9 @@ const port = 5000;
 const app = express();
 
 app.use(cors({
-    origin: '*'
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
 }));
 
 // Middleware to parse JSON request bodies
