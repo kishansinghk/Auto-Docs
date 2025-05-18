@@ -52,6 +52,18 @@ router.delete("/delete/:id", authMiddleware, async (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: "Error deleting document" });
     });
-})
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const doc = await Model.findById(req.params.id);
+    if (!doc) {
+      return res.status(404).json({ error: "Document not found" });
+    }
+    res.json(doc);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;
