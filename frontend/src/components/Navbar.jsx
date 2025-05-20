@@ -58,9 +58,6 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-8">
           {/* <Link href="/tools" className="text-white/90 hover:text-white">Tools</Link> */}
 
-          {isLoggedIn && (
-            <Link href="/user/uploadCode" className="text-white/90 hover:text-white">Upload Code</Link>
-          )}
           <Link href="/contact-us" className="text-white/90 hover:text-white">Contact Us</Link>
           <Link href="/about-us" className="text-white/90 hover:text-white">About Us</Link>
         </div>

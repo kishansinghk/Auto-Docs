@@ -1,6 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 const multer = require("multer");
+const mime = require('mime-types');
 const { uploadFile, getAllDocs, updateDoc, getDocById, exportDoc } = require("../controllers/docsController");
 const { authMiddleware } = require("../middleware/authMiddleware");
 const Model = require("../models/docsModel");
