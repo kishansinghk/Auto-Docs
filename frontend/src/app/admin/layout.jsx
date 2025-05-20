@@ -1,15 +1,16 @@
-import Navbar from '@/components/Navbar'
+'use client';
+import { useState } from 'react';
+import Sidebar from './Sidebar';
 
+export default function AdminLayout({ children }) {
+  const [darkMode, setDarkMode] = useState(true);
 
-export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <Navbar />
-        <div className='pt-16'>
-          {children}
-        </div>
-      </body>
-    </html>
-  )
+    <div className={`flex h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-100'}`}>
+      <Sidebar darkMode={darkMode} setDarkMode={setDarkMode} />
+      <div className="flex-1 overflow-hidden">
+        {children}
+      </div>
+    </div>
+  );
 }

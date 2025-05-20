@@ -1,6 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 const multer = require("multer");
+const mime = require('mime-types');
 const { uploadFile, getAllDocs, updateDoc, getDocById, exportDoc } = require("../controllers/docsController");
 const { authMiddleware } = require("../middleware/authMiddleware");
 const Model = require("../models/docsModel");
@@ -21,13 +22,17 @@ const upload = multer({
       ".css",
     ];
     const fileExt = "." + file.originalname.split(".").pop().toLowerCase();
+    const mimeType = mime.lookup(file.originalname);
 
-    if (allowedExtensions.includes(fileExt)) {
+    if (allowedExtensions.includes(fileExt) && mimeType) {
       cb(null, true);
     } else {
       cb(new Error("Invalid file type. Only code files are allowed."));
     }
   },
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  }
 });
 
 // Export validation middleware
