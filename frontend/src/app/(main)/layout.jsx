@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
       <body>
         <Navbar />
         <Toaster position='top-right' />
-        <div className=''>
+        <div className='pt-10'>
           {children}
         </div>
       </body>

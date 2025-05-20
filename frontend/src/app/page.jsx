@@ -47,12 +47,12 @@ export default function AutoDocsPreview() {
               >
                 Get Started
               </Link>
-              <Link
+              {/* <Link
                 href="/demo"
                 className="px-8 py-3 border-2 border-blue-400 text-blue-400 rounded-md font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 hover:scale-105"
               >
                 Watch Demo
-              </Link>
+              </Link> */}
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}

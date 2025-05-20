@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { submitFeedback, getAllFeedback } = require('../controllers/feedbackController');
+const { submitFeedback, getAllFeedback, getFeedbackStats } = require('../controllers/feedbackController');
+const { authMiddleware } = require('../middleware/authMiddleware');
 
-// POST - Submit feedback
-router.post('/', submitFeedback);
+// Submit feedback (public route)
+router.post('/submit', submitFeedback);
 
-// GET - Get all feedback (optional, for admin)
-router.get('/', getAllFeedback);
+// Admin routes (protected)
+router.get('/all', authMiddleware, getAllFeedback);
+router.get('/stats', authMiddleware, getFeedbackStats);
 
 module.exports = router;
