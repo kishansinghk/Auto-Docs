@@ -5,31 +5,36 @@ const mime = require('mime-types');
 const { uploadFile, getAllDocs, updateDoc, getDocById, exportDoc } = require("../controllers/docsController");
 const { authMiddleware } = require("../middleware/authMiddleware");
 const Model = require("../models/docsModel");
+const path = require('path');
 
 const router = express.Router();
-const upload = multer({
-  dest: "uploads/",
-  fileFilter: (req, file, cb) => {
-    // Accept common code file extensions
-    const allowedExtensions = [
-      ".js",
-      ".jsx",
-      ".ts",
-      ".tsx",
-      ".py",
-      ".java",
-      ".html",
-      ".css",
-    ];
-    const fileExt = "." + file.originalname.split(".").pop().toLowerCase();
-    const mimeType = mime.lookup(file.originalname);
 
-    if (allowedExtensions.includes(fileExt) && mimeType) {
-      cb(null, true);
-    } else {
-      cb(new Error("Invalid file type. Only code files are allowed."));
-    }
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
   },
+  filename: function (req, file, cb) {
+    // Create unique filename
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  // Accept common code file extensions
+  const allowedExtensions = ['.js', '.jsx', '.ts', '.tsx', '.py', '.java', '.html', '.css'];
+  const ext = path.extname(file.originalname).toLowerCase();
+  
+  if (allowedExtensions.includes(ext)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Invalid file type. Only code files are allowed.'), false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
   limits: {
     fileSize: 5 * 1024 * 1024 // 5MB limit
   }
@@ -57,18 +62,6 @@ router.delete("/delete/:id", authMiddleware, async (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: "Error deleting document" });
     });
-});
-
-router.get("/:id", async (req, res) => {
-  try {
-    const doc = await Model.findById(req.params.id);
-    if (!doc) {
-      return res.status(404).json({ error: "Document not found" });
-    }
-    res.json(doc);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
 });
 
 module.exports = router;
