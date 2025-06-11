@@ -78,7 +78,6 @@ export default function ExportPage() {
   const params = useParams();
   const router = useRouter();
   const [selectedFormat, setSelectedFormat] = useState('markdown');
-  const [selectedTemplate, setSelectedTemplate] = useState('default');
   const [docData, setDocData] = useState(null);  // Renamed from 'document' to 'docData'
   const [loading, setLoading] = useState(true);
   const [includeOptions, setIncludeOptions] = useState({
@@ -89,7 +88,7 @@ export default function ExportPage() {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
     if (!token) {
       router.push('/login');
       return;
@@ -136,10 +135,6 @@ export default function ExportPage() {
     setSelectedFormat(format);
   };
 
-  const handleTemplateChange = (template) => {
-    setSelectedTemplate(template);
-  };
-
   const handleOptionToggle = (option) => {
     setIncludeOptions(prev => ({
       ...prev,
@@ -150,7 +145,7 @@ export default function ExportPage() {
   const handleExport = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('user');
+      const token = localStorage.getItem('token');
       
       if (!token) {
         router.push('/login');
@@ -159,7 +154,6 @@ export default function ExportPage() {
 
       const response = await axios.post(`http://localhost:5000/api/export/${params.id}`, {
         format: selectedFormat,
-        template: selectedTemplate,
         options: includeOptions
       }, {
         headers: {
@@ -298,50 +292,6 @@ export default function ExportPage() {
                 </div>
               </motion.div>
 
-              {/* Template Selection */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="bg-[#112240] rounded-xl shadow-2xl p-8 border border-gray-800"
-              >
-                <h2 className="text-2xl font-bold mb-6 text-white">Template</h2>
-                <div className="space-y-4">
-                  {[
-                    { id: 'default', label: 'Default', description: 'Clean and professional' },
-                    { id: 'minimal', label: 'Minimal', description: 'Simple and focused' },
-                    { id: 'technical', label: 'Technical', description: 'Detailed and structured' }
-                  ].map((template) => (
-                    <motion.div
-                      key={template.id}
-                      whileHover={{ scale: 1.01 }}
-                      onClick={() => handleTemplateChange(template.id)}
-                      className={`p-4 rounded-lg border transition-all duration-300 cursor-pointer ${
-                        selectedTemplate === template.id
-                          ? 'bg-blue-500/20 border-blue-500'
-                          : 'bg-[#0a192f] border-gray-700 hover:border-blue-500/50'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-medium text-white">{template.label}</h3>
-                          <p className="text-sm text-gray-400">{template.description}</p>
-                        </div>
-                        {selectedTemplate === template.id && (
-                          <motion.span
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="text-blue-400"
-                          >
-                            ✓
-                          </motion.span>
-                        )}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
               {/* Include Options */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -447,7 +397,7 @@ export default function ExportPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: 8, delay: 0.8 }}
             className="mt-16 bg-[#112240] rounded-xl shadow-2xl p-8 border border-gray-800"
           >
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
