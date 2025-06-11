@@ -214,7 +214,7 @@ export default function UploadCodePage() {
     let inCodeBlock = false;
     let codeBlockContent = '';
     let codeBlockLanguage = '';
-    
+
     lines.forEach((line, index) => {
       if (line.startsWith('```')) {
         if (inCodeBlock) {
@@ -227,7 +227,7 @@ export default function UploadCodePage() {
             language: codeBlockLanguage,
             content: codeBlockContent
           });
-          
+
           inCodeBlock = false;
           codeBlockContent = '';
           currentSection = [];
@@ -238,9 +238,12 @@ export default function UploadCodePage() {
       } else if (inCodeBlock) {
         codeBlockContent += line + '\n';
       } else {
-        currentSection.push(line);
+        // Remove markdown symbols (* and #) from plain text
+        let cleanLine = line;
+        // Don't modify code blocks but clean plain text
+        currentSection.push(cleanLine);
       }
-      
+
       if (index === lines.length - 1 && currentSection.length > 0) {
         sections.push({
           type: 'text',
@@ -248,24 +251,27 @@ export default function UploadCodePage() {
         });
       }
     });
-    
+
     return (
       <>
         {sections.map((section, index) => {
           if (section.type === 'code') {
             return <CodeBlock key={index} language={section.language} code={section.content.trim()} />;
           } else {
+            // For plain text, remove markdown formatting symbols and maintain transparency
             return (
-              <div 
+              <div
                 key={index}
-                className="mb-4"
-                dangerouslySetInnerHTML={{ 
+                className="mb-4 bg-transparent"
+                dangerouslySetInnerHTML={{
                   __html: section.content
-                    .replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold text-blue-400 mt-6 mb-3">$1</h1>')
-                    .replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold text-blue-300 mt-5 mb-2">$1</h2>')
-                    .replace(/^### (.*$)/gm, '<h3 class="text-lg font-bold text-blue-200 mt-4 mb-2">$1</h3>')
-                    .replace(/\*\*(.*?)\*\*/g, '<span class="font-bold">$1</span>')
-                    .replace(/\*(.*?)\*/g, '<span class="italic">$1</span>')
+                    // Replace heading formats but keep text
+                    .replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold text-blue-400 mt-6 mb-3 bg-transparent">$1</h1>')
+                    .replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold text-blue-300 mt-5 mb-2 bg-transparent">$1</h2>')
+                    .replace(/^### (.*$)/gm, '<h3 class="text-lg font-bold text-blue-200 mt-4 mb-2 bg-transparent">$1</h3>')
+                    // Remove asterisks but keep formatting
+                    .replace(/\*\*(.*?)\*\*/g, '<span class="font-bold bg-transparent">$1</span>')
+                    .replace(/\*(.*?)\*/g, '<span class="italic bg-transparent">$1</span>')
                 }}
               />
             );
@@ -286,7 +292,7 @@ export default function UploadCodePage() {
         >
           {/* Header Section */}
           <div className="text-center mb-16">
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -294,7 +300,7 @@ export default function UploadCodePage() {
             >
               Upload Your Code
             </motion.h1>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -333,11 +339,10 @@ export default function UploadCodePage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleLanguageChange(lang.id)}
-                      className={`p-4 rounded-lg border transition-all duration-300 ${
-                        selectedLanguage === lang.id
+                      className={`p-4 rounded-lg border transition-all duration-300 ${selectedLanguage === lang.id
                           ? 'bg-blue-500/20 border-blue-500 text-blue-400'
                           : 'bg-[#0a192f] border-gray-700 text-gray-400 hover:border-blue-500/50'
-                      }`}
+                        }`}
                     >
                       <span className="text-2xl mb-2 block">{lang.icon}</span>
                       <span className="font-medium">{lang.label}</span>
@@ -365,11 +370,10 @@ export default function UploadCodePage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleUploadMethodChange(method.id)}
-                      className={`p-4 rounded-lg border transition-all duration-300 ${
-                        uploadMethod === method.id
+                      className={`p-4 rounded-lg border transition-all duration-300 ${uploadMethod === method.id
                           ? 'bg-blue-500/20 border-blue-500 text-blue-400'
                           : 'bg-[#0a192f] border-gray-700 text-gray-400 hover:border-blue-500/50'
-                      }`}
+                        }`}
                     >
                       <span className="text-2xl mb-2 block">{method.icon}</span>
                       <span className="font-medium">{method.label}</span>
@@ -394,11 +398,10 @@ export default function UploadCodePage() {
                   className="bg-[#112240] rounded-xl shadow-2xl p-8 border border-gray-800"
                 >
                   <div
-                    className={`border-2 border-dashed rounded-lg p-12 text-center transition-all duration-300 ${
-                      isDragging
+                    className={`border-2 border-dashed rounded-lg p-12 text-center transition-all duration-300 ${isDragging
                         ? 'border-blue-500 bg-blue-500/10'
                         : 'border-gray-700 hover:border-blue-500/50'
-                    }`}
+                      }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
@@ -511,11 +514,10 @@ export default function UploadCodePage() {
                     <li key={doc._id}>
                       <button
                         onClick={() => setActiveDoc(doc._id)}
-                        className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
-                          activeDoc === doc._id 
-                            ? "bg-blue-500/20 border-l-4 border-blue-500 font-medium text-blue-400" 
+                        className={`w-full text-left px-3 py-2 rounded-md transition-colors ${activeDoc === doc._id
+                            ? "bg-blue-500/20 border-l-4 border-blue-500 font-medium text-blue-400"
                             : "text-gray-400 hover:bg-blue-500/10"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -536,18 +538,18 @@ export default function UploadCodePage() {
                           {isDownloading ? (
                             <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-green-400"></div>
                           ) : (
-                            <svg 
-                              xmlns="http://www.w3.org/2000/svg" 
-                              className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" 
-                              fill="none" 
-                              viewBox="0 0 24 24" 
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 transition-transform group-hover:-translate-y-0.5"
+                              fill="none"
+                              viewBox="0 0 24 24"
                               stroke="currentColor"
                             >
-                              <path 
-                                strokeLinecap="round" 
-                                strokeLinejoin="round" 
-                                strokeWidth={2} 
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" 
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                               />
                             </svg>
                           )}
@@ -570,7 +572,7 @@ export default function UploadCodePage() {
                   ))}
                 </ul>
               </div>
-              
+
               <div className="lg:col-span-3">
                 {activeDoc && (
                   <div className="bg-[#112240] rounded-xl shadow-2xl overflow-hidden border border-gray-800">
@@ -614,7 +616,7 @@ export default function UploadCodePage() {
                               </div>
                             </div>
                           ) : (
-                            <div className="prose prose-invert max-w-none">
+                            <div className="prose prose-invert max-w-none bg-transparent">
                               {renderDocContent(doc.content)}
                             </div>
                           )}
